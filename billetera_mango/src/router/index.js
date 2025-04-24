@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from '@/components/Login.vue'
+import LoginView from '@/pages/Login.vue'
 
 const routes = [
   {
