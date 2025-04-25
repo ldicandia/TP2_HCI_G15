@@ -48,7 +48,7 @@
         <v-btn class="login-button" block @click="register">Registrarse</v-btn>
         <div class="mt-6 text-center">
           <span class="text-grey text-caption">¿Ya tienes cuenta? </span>
-          <a href="/login" class="text-caption text-grey text-decoration-underline">Inicia sesión</a>
+          <a @click="goToLogin" class="text-caption text-grey text-decoration-underline">Inicia sesión</a>
         </div>
       </v-card>
     </v-main>
@@ -75,6 +75,10 @@ function register() {
   
   // Redirigir al usuario a la página de inicio o a otra ruta
   router.push('/home') // Cambia '/home' por la ruta deseada
+}
+
+function goToLogin() {
+  router.push('/login') // Redirige a la página de inicio de sesión
 }
 </script>
 
