@@ -11,6 +11,7 @@
   width: 100%;
   border-radius: 1rem;
   background-color: #2a3b4c;
+  padding: 2rem;
 }
 
 .logo-container {
@@ -28,5 +29,7 @@
 }
 
 .login-button {
+  border-radius: 1rem;
+  margin-top: 1rem;
   background-color: #00acc1;
 }

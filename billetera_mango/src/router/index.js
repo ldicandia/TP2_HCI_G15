@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/pages/Login.vue'
+import RegisterView from '@/pages/Register.vue'
 
 const routes = [
   {
@@ -8,8 +9,13 @@ const routes = [
     component: LoginView
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: RegisterView
+  },
+  {
     path: '/',
-    redirect: '/login'  // Redirige la raíz al login
+    redirect: '/login'
   }
 ]
 

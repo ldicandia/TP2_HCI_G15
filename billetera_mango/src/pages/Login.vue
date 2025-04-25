@@ -26,13 +26,10 @@
           hide-details
           color="cyan"
         />
-        <div class="text-right mb-4">
-          <a href="#" class="text-caption text-cyan">¿Olvidaste tu contraseña?</a>
-        </div>
         <v-btn class="login-button" block @click="login">Ingresar</v-btn>
         <div class="mt-6 text-center">
-          <span class="text-white text-caption">¿No tienes cuenta?</span>
-          <a href="#" class="text-caption text-cyan text-decoration-underline">Regístrate</a>
+          <span class="text-grey text-caption">¿No tienes cuenta? </span>
+          <a @click="goToRegister" class="text-caption text-grey text-decoration-underline">Regístrate</a>
         </div>
       </v-card>
     </v-main>
@@ -41,12 +38,19 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const email = ref('')
 const password = ref('')
 
 function login() {
   console.log('Intentando login con', email.value, password.value)
+}
+
+function goToRegister() {
+  router.push('/register') // Redirige a la página de registro
 }
 </script>
 
