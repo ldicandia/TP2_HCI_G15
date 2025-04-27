@@ -4,7 +4,7 @@
       <v-card class="pa-6 login-card">
         <div class="text-center mb-6">
           <div class="logo-container">
-            <v-img src="/public/mango-logo.png" class="logo-image" />
+            <v-img src="/mango-logo.png" class="logo-image" />
           </div>
         </div>
         <v-text-field
@@ -47,6 +47,7 @@ const password = ref('')
 
 function login() {
   console.log('Intentando login con', email.value, password.value)
+  router.push('/home') // Redirige a la página de inicio
 }
 
 function goToRegister() {

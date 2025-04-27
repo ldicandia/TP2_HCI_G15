@@ -72,9 +72,7 @@ function register() {
     return
   }
   console.log('Registrando usuario:', { name: name.value, email: email.value })
-  
-  // Redirigir al usuario a la página de inicio o a otra ruta
-  router.push('/home') // Cambia '/home' por la ruta deseada
+  router.push('/home') 
 }
 
 function goToLogin() {
