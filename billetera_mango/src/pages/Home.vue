@@ -6,7 +6,7 @@
           <v-img src="/mango-logo.png" max-width="120" class="logo" />
         </v-list-item>
         <v-list-item>
-          <v-btn block class="menu-button" flat>
+          <v-btn block class="menu-button-selected" flat>
             <v-icon class="icon">mdi-home</v-icon>
             <span>Inicio</span>
           </v-btn>

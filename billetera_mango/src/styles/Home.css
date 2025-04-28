@@ -17,6 +17,13 @@
   text-align: left;
 }
 
+.menu-button-selected {
+  margin-bottom: 8px;
+  justify-content: flex-start;
+  text-align: left;
+  background-color: #0e1628;
+}
+
 .icon {
   margin-right: 8px;
 }
