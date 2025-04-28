@@ -1,0 +1,56 @@
+/* General */
+.navigation-drawer {
+  padding: 4px;
+}
+
+.logo-container {
+  margin-bottom: 16px;
+}
+
+.logo {
+  margin: 0 auto;
+}
+
+.menu-button {
+  margin-bottom: 8px;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.icon {
+  margin-right: 8px;
+}
+
+.logout-button {
+  margin-top: 16px;
+}
+
+/* Main content */
+.content {
+  padding: 16px;
+}
+
+.saldo-card {
+  padding: 32px;
+}
+
+.tarjetas-card {
+  padding: 48px;
+}
+
+.vincular-button,
+.desvincular-button {
+  margin-right: 8px;
+}
+
+.actions-row {
+  margin-top: 16px;
+}
+
+.action-button {
+  margin-bottom: 16px;
+}
+
+.movimientos-card {
+  padding: 16px;
+}

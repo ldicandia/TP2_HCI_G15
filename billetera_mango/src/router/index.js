@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/pages/Login.vue'
 import RegisterView from '@/pages/Register.vue'
-import HomeView from '@/pages/Home.vue' // Importa el componente Home
+import HomeView from '@/pages/Home.vue'
 
 const routes = [
   {

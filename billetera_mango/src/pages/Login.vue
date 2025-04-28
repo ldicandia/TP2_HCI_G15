@@ -1,9 +1,9 @@
 <template>
-  <v-app class="bg-dark">
+  <v-app color="background">
     <v-main class="d-flex align-center justify-center">
-      <v-card class="pa-6 login-card">
+      <v-card class="pa-6 login-card" color="surface">
         <div class="text-center mb-6">
-          <div class="logo-container">
+          <div class="logo-container" color="surface">
             <v-img src="/mango-logo.png" class="logo-image" />
           </div>
         </div>
@@ -26,7 +26,7 @@
           hide-details
           color="cyan"
         />
-        <v-btn class="login-button" block @click="login">Ingresar</v-btn>
+        <v-btn class="login-button" block @click="login" color="button">Ingresar</v-btn>
         <div class="mt-6 text-center">
           <span class="text-grey text-caption">¿No tienes cuenta? </span>
           <a @click="goToRegister" class="text-caption text-grey text-decoration-underline">Regístrate</a>
