@@ -1,7 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from '@/pages/Login.vue'
-import RegisterView from '@/pages/Register.vue'
-import HomeView from '@/pages/Home.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import LoginView from '@/pages/Login.vue';
+import RegisterView from '@/pages/Register.vue';
+import HomeView from '@/pages/Home.vue';
+import CobrosView from '@/pages/Cobros.vue';
+import PagoServiciosView from '@/pages/PagoServicios.vue';
 
 const routes = [
   {
@@ -18,6 +20,14 @@ const routes = [
     path: '/home', // Agrega la ruta para Home
     name: 'Home',
     component: HomeView
+  },
+  { path: '/cobros', 
+    name: 'Cobros', 
+    component: CobrosView 
+  },
+  { path: '/pago-servicios', 
+    name: 'PagoServicios', 
+    component: PagoServiciosView 
   },
   {
     path: '/',
