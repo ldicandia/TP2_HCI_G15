@@ -58,7 +58,7 @@
       </v-list-item>
     </v-list>
     <!-- Botón Cerrar Sesión -->
-    <v-btn block class="logout-button" color="button" flat>Cerrar Sesión</v-btn>
+    <v-btn block @click="goToLogin" class="logout-button" color="button" flat>Cerrar Sesión</v-btn>
   </v-navigation-drawer>
 </template>
 
@@ -87,6 +87,11 @@ function goToCobros() {
 function goToPagoServicios() {
   router.push("/pago-servicios");
 }
+
+function goToLogin() {
+  router.push("/login");
+}
+
 </script>
 
 <style scoped>
