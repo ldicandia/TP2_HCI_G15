@@ -170,165 +170,24 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+// Import the composable function
+import { useTarjetasLogic } from "@/composables/Tarjetas.js"; // Adjust path if needed
 
-// --- Import card images (adjust paths if your structure is different) ---
-import visaLogo from "@/assets/Tarjetas/Visa.png"; // Using @ alias
-import mastercardLogo from "@/assets/Tarjetas/MasterCard.png";
-import amexLogo from "@/assets/Tarjetas/AmericanExpress.jpg"; // Corrected extension if it's jpg
-import genericCardLogo from "@/assets/Tarjetas/Generic.png"; // Fallback for 'Otra' or unknown
+// Call the composable and destructure the returned state and methods
+const {
+  dialog,
+  form, // Destructure the ref
+  cards,
+  newCard,
+  rules,
+  getCardImage,
+  addCard,
+  removeCard,
+  closeDialog,
+} = useTarjetasLogic();
 
-// --- State ---
-const dialog = ref(false); // Controls the visibility of the add card dialog
-const form = ref(null); // Reference to the form for validation
-
-// Dummy data for existing cards - replace with actual data fetching later
-const cards = ref([]);
-
-// Data for the new card being added
-const newCard = ref({
-  number: "",
-  expiry: "",
-  cvv: "",
-  name: "",
-  type: null, // Initialize type as null
-  last4: "", // Will be calculated
-});
-
-// --- Validation Rules ---
-const rules = {
-  required: (value) => !!value || "Campo requerido.",
-  cardNumber: (value) => {
-    if (!value) return true; // Don't validate if empty, required rule handles that
-    const pattern = /^[0-9]{4}\s?[0-9]{4}\s?[0-9]{4}\s?[0-9]{4}$/; // Basic format check
-    return pattern.test(value) || "Número de tarjeta inválido (16 dígitos).";
-  },
-  expiryDate: (value) => {
-    if (!value) return true;
-    const pattern = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/; // MM/YY format
-    if (!pattern.test(value)) return "Formato inválido (MM/AA).";
-    // Optional: Add check for expiry date being in the future
-    const [month, year] = value.split("/");
-    const expiryDate = new Date(`20${year}`, month - 1); // Month is 0-indexed
-    const currentDate = new Date();
-    currentDate.setDate(1); // Set to first day of current month for comparison
-    currentDate.setHours(0, 0, 0, 0);
-    // Check if expiry month is before current month in the same year, or if year is past
-    if (expiryDate < currentDate) {
-      return "La tarjeta está vencida.";
-    }
-    return true;
-  },
-  cvv: (value) => {
-    if (!value) return true;
-    const pattern = /^[0-9]{3,4}$/; // 3 or 4 digits
-    return pattern.test(value) || "CVV inválido (3 o 4 dígitos).";
-  },
-};
-
-// --- Helper function to get card image ---
-const getCardImage = (type) => {
-  if (!type) return genericCardLogo; // Default to generic when type is null or empty
-  const lowerType = type.toLowerCase();
-  if (lowerType.includes("visa")) return visaLogo;
-  if (lowerType.includes("mastercard")) return mastercardLogo;
-  if (lowerType.includes("american express")) return amexLogo;
-  return genericCardLogo; // Default for 'Otra' or if type is missing/unknown
-};
-
-// --- Methods ---
-const addCard = async () => {
-  if (!form.value) return; // Ensure form ref is available
-  const { valid } = await form.value.validate(); // Validate the form
-
-  if (valid) {
-    // Calculate last 4 digits (remove spaces first)
-    const cardNumberClean = newCard.value.number.replace(/\s/g, "");
-    newCard.value.last4 = cardNumberClean.slice(-4);
-
-    // Add the new card to the list (in a real app, send this to the backend)
-    cards.value.push({ ...newCard.value });
-
-    closeDialog(); // Close the dialog and reset the form
-  }
-};
-
-const removeCard = (index) => {
-  // Add confirmation dialog here if desired
-  cards.value.splice(index, 1);
-  // In a real app, call an API to remove the card from the backend
-};
-
-const closeDialog = () => {
-  dialog.value = false;
-  if (form.value) {
-    // Check if form exists before resetting
-    form.value.resetValidation(); // Reset validation state
-    form.value.reset(); // Reset form fields
-  }
-  // Reset the new card object manually as well, just in case reset doesn't clear v-model
-  newCard.value = {
-    number: "",
-    expiry: "",
-    cvv: "",
-    name: "",
-    type: null, // Reset type to null
-    last4: "",
-  };
-};
+// No other JavaScript needed here unless you have component-specific logic
+// that doesn't belong in the composable.
 </script>
 
-<style scoped>
-.card-preview-image {
-  border: 1px solid rgba(var(--v-border-color), 0.3); /* Optional: add a light border */
-  border-radius: 8px; /* Optional: round corners */
-  background-color: #eee; /* Light background for images with transparency */
-}
-
-.card-display {
-  position: relative; /* Needed for absolute positioning of overlay */
-}
-
-.card-image {
-  border-radius: inherit; /* Inherit border radius from v-card */
-  /* You might need to adjust background properties if images have transparency */
-}
-
-.card-overlay-text {
-  position: absolute;
-  bottom: 8px; /* Position at the bottom */
-  left: 16px; /* Add some padding */
-  color: white; /* Or a contrasting color */
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 0.9em;
-  font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Text shadow for readability */
-}
-
-.card-actions {
-  padding: 8px 16px; /* Adjust padding */
-  background-color: rgba(
-    var(--v-theme-surface),
-    0.8
-  ); /* Optional: slight background */
-}
-
-.card-type-text {
-  font-size: 0.9em;
-  color: rgba(
-    var(--v-theme-on-surface),
-    var(--v-medium-emphasis-opacity)
-  ); /* Use theme color */
-  flex-grow: 1; /* Allow text to take available space */
-  text-align: left;
-}
-
-/* Remove default list item styling if previously added */
-.v-list-item {
-  border: none;
-  padding: 0;
-  margin-bottom: 0;
-}
-</style>
+<style scoped src="@/styles/Tarjetas.css"></style>
