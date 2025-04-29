@@ -1,43 +1,47 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import LoginView from '@/pages/Login.vue';
-import RegisterView from '@/pages/Register.vue';
-import HomeView from '@/pages/Home.vue';
-import CobrosView from '@/pages/Cobros.vue';
-import PagoServiciosView from '@/pages/PagoServicios.vue';
+import { createRouter, createWebHistory } from "vue-router";
+import LoginView from "@/pages/Login.vue";
+import RegisterView from "@/pages/Register.vue";
+import HomeView from "@/pages/Home.vue";
+import CobrosView from "@/pages/Cobros.vue";
+import PagoServiciosView from "@/pages/PagoServicios.vue";
+import TarjetasView from "@/pages/Tarjetas.vue";
 
 const routes = [
   {
-    path: '/login',
-    name: 'Login',
-    component: LoginView
+    path: "/login",
+    name: "Login",
+    component: LoginView,
   },
   {
-    path: '/register',
-    name: 'Register',
-    component: RegisterView
+    path: "/register",
+    name: "Register",
+    component: RegisterView,
   },
   {
-    path: '/home', // Agrega la ruta para Home
-    name: 'Home',
-    component: HomeView
+    path: "/home", // Agrega la ruta para Home
+    name: "Home",
+    component: HomeView,
   },
-  { path: '/cobros', 
-    name: 'Cobros', 
-    component: CobrosView 
-  },
-  { path: '/pago-servicios', 
-    name: 'PagoServicios', 
-    component: PagoServiciosView 
+  { path: "/cobros", name: "Cobros", component: CobrosView },
+  {
+    path: "/pago-servicios",
+    name: "PagoServicios",
+    component: PagoServiciosView,
   },
   {
-    path: '/',
-    redirect: '/login'
-  }
-]
+    path: "/Tarjetas",
+    name: "Tarjetas",
+    component: TarjetasView,
+  },
+  {
+    path: "/",
+    redirect: "/login",
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
