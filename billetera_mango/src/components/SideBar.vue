@@ -88,3 +88,22 @@ function goToPagoServicios() {
   router.push("/pago-servicios");
 }
 </script>
+
+<style scoped>
+.navigation-drawer {
+  text-align: left; /* Asegura que el texto esté alineado a la izquierda */
+}
+
+.logo-container {
+  justify-content: flex-start; /* Alinea el logo a la izquierda */
+}
+
+.menu-button,
+.menu-button-selected {
+  justify-content: flex-start; /* Alinea los botones a la izquierda */
+}
+
+.logout-button {
+  justify-content: flex-start; /* Alinea el botón de cerrar sesión a la izquierda */
+}
+</style>

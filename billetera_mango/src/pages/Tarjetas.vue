@@ -171,7 +171,7 @@
 
 <script setup>
 // Import the composable function
-import { useTarjetasLogic } from "@/composables/Tarjetas.js"; // Adjust path if needed
+import { useTarjetasLogic } from "@/Composables/Tarjetas.js"; // Adjust path if needed
 
 // Call the composable and destructure the returned state and methods
 const {

@@ -35,15 +35,9 @@
             <!-- Fila inferior: Botones de acción y Movimientos -->
             <v-row class="actions-row">
               <v-col cols="6" class="text-center">
-                <v-btn block class="action-button" color="button"
-                  >Enviar Dinero</v-btn
-                >
-                <v-btn block class="action-button" color="button"
-                  >Ingresar Dinero</v-btn
-                >
-                <v-btn block class="action-button" color="button"
-                  >Enlace de pago</v-btn
-                >
+                <v-btn block @click="goEnviarDinero" class="action-button" color="button" >Enviar Dinero</v-btn>
+                <v-btn block @click="goIngresarDinero" class="action-button" color="button">Ingresar Dinero</v-btn>
+                <v-btn block class="action-button" color="button">Enlace de pago</v-btn>
               </v-col>
               <v-col cols="6">
                 <v-card class="movimientos-card" color="surface">
@@ -61,13 +55,16 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
+import { useRouter } from 'vue-router'
 
-const router = useRouter(); // Get the router instance
+const router = useRouter()
 
-// Función para navegar a la página de Tarjetas
-function goToTarjetas() {
-  router.push("/Tarjetas");
+function goEnviarDinero() {
+  router.push('/enviar-dinero')
+}
+
+function goIngresarDinero() {
+  router.push('/ingresar-dinero')
 }
 </script>
 

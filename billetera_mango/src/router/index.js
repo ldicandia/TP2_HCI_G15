@@ -5,6 +5,8 @@ import HomeView from "@/pages/Home.vue";
 import CobrosView from "@/pages/Cobros.vue";
 import PagoServiciosView from "@/pages/PagoServicios.vue";
 import TarjetasView from "@/pages/Tarjetas.vue";
+import EnviarDineroView from "@/pages/EnviarDinero.vue";
+import IngresarDineroView from "@/pages/IngresarDinero.vue";
 
 const routes = [
   {
@@ -37,6 +39,18 @@ const routes = [
     path: "/",
     redirect: "/login",
   },
+  {
+    path: "/enviar-dinero",
+    name: "EnviarDinero",
+    component: EnviarDineroView,
+  },
+  {
+    path: "/ingresar-dinero",
+    name: "IngresarDinero",
+    component: IngresarDineroView,
+  },
+
+
 ];
 
 const router = createRouter({
