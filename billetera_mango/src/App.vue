@@ -11,7 +11,7 @@
 <script setup>
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import Sidebar from "@/components/Sidebar.vue"; // Adjust path if needed
+import Sidebar from "@/components/SideBar.vue"; // Adjust path if needed
 
 const route = useRoute();
 
