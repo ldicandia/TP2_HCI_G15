@@ -4,7 +4,7 @@
       <v-card class="pa-6 login-card" color="surface">
         <div class="text-center mb-6">
           <div class="logo-container" color="surface">
-            <v-img src="/mango-logo.png" class="logo-image" />
+            <v-img :src="mangoLogo" class="logo-image" />
           </div>
         </div>
         <v-text-field
@@ -39,6 +39,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import mangoLogo from '@/assets/mango-logo.png'
 
 const router = useRouter()
 

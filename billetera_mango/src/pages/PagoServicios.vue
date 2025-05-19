@@ -2,7 +2,17 @@
   <v-app class="bg-dark">
     <v-main>
       <v-container>
-        <h1 class="text-center mb-4">Pago de Servicios</h1>
+        <v-row v-if="!selectedService">
+          <v-col cols="12">
+            <h1 class="text-center mb-4">Pago de Servicios</h1>
+          </v-col>
+        </v-row>
+        <v-row v-else>
+          <v-col cols="12">
+            <GoBackButton @click="backToSelection" :to= "'/pago-servicios'"/>
+            <h1 class="text-center mb-4">Pago de Servicios</h1>
+          </v-col>
+        </v-row>
         
         <!-- Transición suave entre selección y formulario -->
         <v-fade-transition>
@@ -25,7 +35,6 @@
             <v-text-field label="Monto" variant="outlined" class="mt-4" />
             <v-text-field label="Referencia o Identificador" variant="outlined" class="mt-4" />
             <v-btn color="button" class="mt-4">Pagar Servicio</v-btn>
-            <v-btn text class="mt-4" @click="backToSelection">Volver a selección</v-btn>
           </v-card>
         </v-fade-transition>
         
@@ -42,6 +51,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import GoBackButton from '@/components/GoBackButton.vue'
 
 // Lista de servicios disponibles con íconos representativos
 const services = [

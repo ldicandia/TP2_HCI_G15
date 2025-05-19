@@ -5,9 +5,7 @@
       <v-container>
         <v-row>
           <v-col cols="12">
-            <v-btn icon @click="goBack">
-              <v-icon>mdi-arrow-left</v-icon>
-            </v-btn>
+            <GoBackButton :to="'/home'" />
           </v-col>
         </v-row>
         <v-row>

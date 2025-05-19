@@ -4,7 +4,7 @@
       <v-card class="pa-6 login-card">
         <div class="text-center mb-6">
           <div class="logo-container">
-            <v-img src="/public/mango-logo.png" class="logo-image" />
+            <v-img :src="mangoLogo" class="logo-image" />
           </div>
         </div>
         <v-text-field
@@ -45,7 +45,7 @@
           hide-details
           color="cyan"
         />
-        <v-btn class="login-button" block @click="register">Registrarse</v-btn>
+        <v-btn class="login-button" block @click="register" color="button">Registrarse</v-btn>
         <div class="mt-6 text-center">
           <span class="text-grey text-caption">¿Ya tienes cuenta? </span>
           <a @click="goToLogin" class="text-caption text-grey text-decoration-underline">Inicia sesión</a>
@@ -58,6 +58,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import mangoLogo from '@/assets/mango-logo.png'
 
 const router = useRouter()
 

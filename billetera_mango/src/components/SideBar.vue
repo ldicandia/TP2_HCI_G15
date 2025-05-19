@@ -1,5 +1,3 @@
-<!-- Side bar para dejar fija en cada ventana de la web-->
-
 <template>
   <!-- Menú lateral -->
   <v-navigation-drawer permanent color="surface" class="navigation-drawer">
@@ -12,7 +10,7 @@
         justify-right
         @click="goToHome"
       >
-        <v-img src="/mango-logo.png" max-width="120" class="logo mx-auto" />
+        <v-img :src="mangoLogo" max-width="120" class="logo mx-auto" />
       </v-list-item>
       <!-- Botón Inicio (seleccionado) -->
       <v-list-item>
@@ -21,25 +19,11 @@
           <span>Inicio</span>
         </v-btn>
       </v-list-item>
-      <!-- Botón Movimientos -->
-      <v-list-item>
-        <v-btn block class="menu-button" flat>
-          <v-icon class="icon">mdi-swap-horizontal</v-icon>
-          <span>Movimientos</span>
-        </v-btn>
-      </v-list-item>
       <!-- Botón Tarjetas -->
       <v-list-item>
         <v-btn block class="menu-button" flat @click="goToTarjetas">
           <v-icon class="icon">mdi-credit-card</v-icon>
           <span>Tarjetas</span>
-        </v-btn>
-      </v-list-item>
-      <!-- Botón Inversión y Rescate -->
-      <v-list-item>
-        <v-btn block class="menu-button" flat>
-          <v-icon class="icon">mdi-chart-line</v-icon>
-          <span>Inversión y Rescate</span>
         </v-btn>
       </v-list-item>
       <!-- Botón Cobros -->
@@ -64,26 +48,22 @@
 
 <script setup>
 import { useRouter } from "vue-router";
+import mangoLogo from "@/assets/mango-logo.png";
 
-// Inicializamos el router para manejar la navegación
 const router = useRouter();
 
-// Función para navegar a la página de Inicio
 function goToHome() {
   router.push("/Home");
 }
 
-// Función para navegar a la página de Tarjetas
 function goToTarjetas() {
   router.push("/Tarjetas");
 }
 
-// Función para navegar a la página de Cobros
 function goToCobros() {
   router.push("/cobros");
 }
 
-// Función para navegar a la página de Pago de Servicios
 function goToPagoServicios() {
   router.push("/pago-servicios");
 }
@@ -96,19 +76,24 @@ function goToLogin() {
 
 <style scoped>
 .navigation-drawer {
-  text-align: left; /* Asegura que el texto esté alineado a la izquierda */
+  text-align: left; 
+  padding: 16px 12px;
 }
 
 .logo-container {
-  justify-content: flex-start; /* Alinea el logo a la izquierda */
+  justify-content: flex-start; 
 }
 
 .menu-button,
 .menu-button-selected {
-  justify-content: flex-start; /* Alinea los botones a la izquierda */
+  justify-content: flex-start; 
 }
 
 .logout-button {
-  justify-content: flex-start; /* Alinea el botón de cerrar sesión a la izquierda */
+  justify-content: flex-start;
+  
 }
+
+
+
 </style>
