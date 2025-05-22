@@ -7,6 +7,7 @@ import PagoServiciosView from "@/pages/PagoServicios.vue";
 import TarjetasView from "@/pages/Tarjetas.vue";
 import EnviarDineroView from "@/pages/EnviarDinero.vue";
 import IngresarDineroView from "@/pages/IngresarDinero.vue";
+import Verify from "@/pages/Verify.vue";
 
 const routes = [
   {
@@ -49,8 +50,10 @@ const routes = [
     name: "IngresarDinero",
     component: IngresarDineroView,
   },
-
-
+  { path: "/verify", 
+    name: "Verify",
+    component: Verify,
+  },
 ];
 
 const router = createRouter({

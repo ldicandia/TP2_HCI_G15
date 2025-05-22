@@ -1,0 +1,570 @@
+{
+    "definition": {
+        "openapi": "3.0.0",
+        "info": {
+            "title": "HCI - Wallet REST API documentation",
+            "version": "2.0.0",
+            "description": "REST API for HCI assignment."
+        },
+        "servers": [
+            {
+                "url": "http://localhost:8080"
+            }
+        ],
+        "components": {
+            "securitySchemes": {
+                "bearerAuth": {
+                    "type": "http",
+                    "scheme": "bearer",
+                    "bearerFormat": "JWT"
+                }
+            }
+        },
+        "responses": {
+            "BadRequest": {
+                "description": "Bad Request: Request or data is invalid or a constraint wasn't met"
+            },
+            "Unauthorized": {
+                "description": "Unauthorized: Authorization information is missing or invalid"
+            },
+            "NotFound": {
+                "description": "Not Found: Requested entity does not exist or doesn't belong to the current user"
+            },
+            "UnprocessableError": {
+                "description": "Unprocessable Error: Request is well-formed, but it is not valid according to the server's expectations."
+            },
+            "ServerError": {
+                "description": "Internal Server Error: Unexpected error"
+            }
+        },
+        "definitions": {
+            "NewUserData": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "lastName": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "format": "YYYY-mm-dd"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 6
+                    },
+                    "metadata": {
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "firstName",
+                    "lastName",
+                    "birthDate",
+                    "email",
+                    "password"
+                ],
+                "example": {
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "birthDate": "1979-01-01",
+                    "email": "johndoe@email.com",
+                    "password": "1234567890",
+                    "metadata": {}
+                }
+            },
+            "UserData": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "firstName": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "lastName": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 6
+                    },
+                    "birthdate": {
+                        "type": "string",
+                        "format": "YYYY-mm-dd"
+                    },
+                    "metadata": {
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "birthdate": "1979-01-01",
+                    "email": "johndoe@email.com",
+                    "metadata": {}
+                }
+            },
+            "CredentialsData": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 6
+                    }
+                },
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "example": {
+                    "email": "johndoe@email.com",
+                    "password": "1234567890"
+                }
+            },
+            "AuthenticationData": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "token"
+                ],
+                "example": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImlhdCI6MTYwMjU2Mjc3MTM4NiwiZXhwIjoxNjAyNTY1MzYzMzg2fQ.ilDzvJ1b77Vyi40g3Sy5mo5iyDj3T6MOhCHsH6jEfDk"
+                }
+            },
+            "EmailData": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    }
+                },
+                "required": [
+                    "email"
+                ],
+                "example": {
+                    "email": "johndoe@email.com"
+                }
+            },
+            "ResetPasswordData": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 6
+                    }
+                },
+                "required": [
+                    "code",
+                    "password"
+                ],
+                "example": {
+                    "code": "08e8cc040b7ce56c",
+                    "password": "1234567890"
+                }
+            },
+            "ChangePasswordData": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 6
+                    }
+                },
+                "required": [
+                    "code",
+                    "password"
+                ],
+                "example": {
+                    "code": "08e8cc040b7ce56c",
+                    "password": "1234567890"
+                }
+            },
+            "AccountData": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "balance": {
+                        "type": "number"
+                    },
+                    "invested": {
+                        "type": "number"
+                    },
+                    "cvu": {
+                        "type": "string"
+                    },
+                    "alias": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "balance": 15000.25,
+                    "invested": 5000,
+                    "cvu": "8PVBGVMHLMPBO2QLCMRZ",
+                    "alias": "PLAYA.TAZA.RELOJ"
+                }
+            },
+            "AccountUserData": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "lastName": {
+                        "type": "string",
+                        "maxLength": 50
+                    }
+                },
+                "example": {
+                    "firstName": "John",
+                    "lastName": "Doe"
+                }
+            },
+            "NewCardData": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "CREDIT",
+                            "DEBIT"
+                        ]
+                    },
+                    "number": {
+                        "type": "string"
+                    },
+                    "expirationDate": {
+                        "type": "string"
+                    },
+                    "fullName": {
+                        "type": "string"
+                    },
+                    "cvv": {
+                        "type": "string"
+                    },
+                    "metadata": {
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "type",
+                    "number",
+                    "expirationDate",
+                    "fullName",
+                    "cvv"
+                ],
+                "example": {
+                    "type": "CREDIT",
+                    "number": "4929013203790202",
+                    "expirationDate": "01/30",
+                    "fullName": "John Doe",
+                    "cvv": "123",
+                    "metadata": {}
+                }
+            },
+            "CardData": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "DEBIT",
+                            "CREDIT"
+                        ]
+                    },
+                    "number": {
+                        "type": "string"
+                    },
+                    "expirationDate": {
+                        "type": "string"
+                    },
+                    "fullName": {
+                        "type": "string"
+                    },
+                    "metadata": {
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "type": "CREDIT",
+                    "number": "4929********0202",
+                    "expirationDate": "01/30",
+                    "fullName": "John Doe",
+                    "metadata": {}
+                }
+            },
+            "InvestmentDailyRateData": {
+                "type": "object",
+                "properties": {
+                    "interest": {
+                        "type": "number"
+                    }
+                },
+                "example": {
+                    "interest": 0.0007671233
+                }
+            },
+            "InvestmentDailyReturnData": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "return": {
+                        "type": "number"
+                    },
+                    "date": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "return": 11.51,
+                    "date": "2025-01-01"
+                }
+            },
+            "NewPaymentData": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "amount: ": {
+                        "type": "number"
+                    },
+                    "metadata": {
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "description",
+                    "amount"
+                ],
+                "example": {
+                    "description": "Store purchase",
+                    "amount": 12000.50,
+                    "metadata": {}
+                }
+            },
+            "PendingPaymentData": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "amount": {
+                        "type": "number"
+                    },
+                    "pending": {
+                        "type": "boolean"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "method": {
+                        "type": "string",
+                        "enum": [
+                            "ACCOUNT",
+                            "CARD"
+                        ]
+                    },
+                    "receiver": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "firstName": {
+                                "type": "string"
+                            },
+                            "lastName": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "metadata": {
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "description": "Store purchase",
+                    "amount": 12000.50,
+                    "pending": true,
+                    "uuid": "0c56ccbd-f6f7-46bf-9264-71e1c8c28812",
+                    "receiver": {
+                        "id": 1,
+                        "firstName": "John",
+                        "lastName": "Doe"
+                    },
+                    "metadata": {}
+                }
+            },
+            "PaymentData": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "amount": {
+                        "type": "number"
+                    },
+                    "pending": {
+                        "type": "boolean"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "method": {
+                        "type": "string",
+                        "enum": [
+                            "ACCOUNT",
+                            "CARD"
+                        ]
+                    },
+                    "payer": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "firstName": {
+                                "type": "string"
+                            },
+                            "lastName": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "receiver": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "firstName": {
+                                "type": "string"
+                            },
+                            "lastName": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "card": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "number": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "metadata": {
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "description": "Store purchase",
+                    "amount": 12000.50,
+                    "pending": false,
+                    "uuid": "0c56ccbd-f6f7-46bf-9264-71e1c8c28812",
+                    "method": "ACCOUNT",
+                    "payer": {
+                        "id": 2,
+                        "firstName": "Jane",
+                        "lastName": "Doe"
+                    },
+                    "receiver": {
+                        "id": 1,
+                        "firstName": "John",
+                        "lastName": "Doe"
+                    },
+                    "card": {
+                        "id": 1,
+                        "number": "4929********0202"
+                    },
+                    "metadata": {}
+                }
+            },
+            "PagingData": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "integer"
+                    },
+                    "pageSize": {
+                        "type": "integer"
+                    },
+                    "pageCount": {
+                        "type": "integer"
+                    },
+                    "totalCount": {
+                        "type": "integer"
+                    }
+                },
+                "example": {
+                    "page": 1,
+                    "pageSize": 10,
+                    "pageCount": 1,
+                    "totalCount": 1
+                }
+            }
+        },
+        "security": [
+            {
+                "bearerAuth": []
+            }
+        ]
+    },
+    "apis": [
+        "./src/routes/*.ts"
+    ]
+}

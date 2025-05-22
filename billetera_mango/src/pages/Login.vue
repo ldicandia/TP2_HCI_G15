@@ -26,7 +26,11 @@
           hide-details
           color="cyan"
         />
-        <v-btn class="login-button" block @click="login" color="button">Ingresar</v-btn>
+        <!-- Mensaje de error -->
+        <div v-if="errorMessage" class="error-message text-red text-caption mb-4">
+          {{ errorMessage }}
+        </div>
+        <v-btn class="login-button" block @click="handleLogin" color="button">Ingresar</v-btn>
         <div class="mt-6 text-center">
           <span class="text-grey text-caption">¿No tienes cuenta? </span>
           <a @click="goToRegister" class="text-caption text-grey text-decoration-underline">Regístrate</a>
@@ -39,16 +43,24 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useSecurityStore } from '@/stores/useAuth'
 import mangoLogo from '@/assets/mango-logo.png'
 
 const router = useRouter()
+const securityStore = useSecurityStore()
 
 const email = ref('')
 const password = ref('')
+const errorMessage = ref('')
 
-function login() {
-  console.log('Intentando login con', email.value, password.value)
-  router.push('/home') // Redirige a la página de inicio
+async function handleLogin() {
+  try {
+    await securityStore.login({ email: email.value, password: password.value }, true)
+    router.push('/home') // Redirige a la página de inicio
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error)
+    errorMessage.value = 'Credenciales inválidas. Por favor, inténtalo de nuevo.'
+  }
 }
 
 function goToRegister() {
