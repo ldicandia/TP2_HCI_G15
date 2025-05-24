@@ -10,8 +10,24 @@
               <v-col cols="6">
                 <v-card class="saldo-card" color="surface">
                   <h3>Saldo Disponible</h3>
-                  <h1>$1.234.567,89</h1>
-                  <p>CVU:</p>
+                  <h1>
+                    {{ account && account.balance != null
+                      ? `$${Number(account.balance).toLocaleString('es-AR', { minimumFractionDigits: 2 })}`
+                      : 'Cargando...' }}
+                  </h1>
+                  <p>
+                    CVU:
+                    {{ account && account.cvu
+                      ? account.cvu
+                      : 'Cargando...' }}
+                  </p>
+                  <!-- Nuevo campo Alias -->
+                  <p>
+                    Alias:
+                    {{ account && account.alias
+                      ? account.alias
+                      : 'Cargando...' }}
+                  </p>
                 </v-card>
               </v-col>
               <v-col cols="6">
@@ -56,8 +72,16 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { useAccountStore } from '@/stores/useAccount.js'
+import { useSecurityStore } from '@/stores/useAuth'
+import { onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 
-const router = useRouter()
+const router       = useRouter()
+const accountStore = useAccountStore()
+const securityStore = useSecurityStore()
+// extrae account como ref reactivo
+const { account } = storeToRefs(accountStore)
 
 function goEnviarDinero() {
   router.push('/enviar-dinero')
@@ -66,6 +90,22 @@ function goEnviarDinero() {
 function goIngresarDinero() {
   router.push('/ingresar-dinero')
 }
+
+function goToTarjetas() {
+  router.push('/tarjetas')
+}
+
+onMounted(async () => {
+  securityStore.initialize()
+  try {
+    await accountStore.getAccountDetails()
+  } catch (e) {
+    console.error('No pudo cargar la cuenta:', e)
+  }
+  if (!securityStore.isLoggedIn) {
+    router.push('/login')
+  }
+})
 </script>
 
 <style scoped src="@/styles/Home.css"></style>

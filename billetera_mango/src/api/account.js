@@ -28,13 +28,14 @@ class AccountApi {
 }
 
 class Account {
-    constructor(id, balance, alias, cvu) {
+    constructor(id, balance, alias, cvu, invested) {
         if (id) {
             this.id = id;
         }
         this.balance = balance;
         this.alias = alias;
         this.cvu = cvu;
+        this.invested = invested; // Agregar la propiedad 'invested'
     }
     toString() {
         return JSON.stringify(this, null, 2);

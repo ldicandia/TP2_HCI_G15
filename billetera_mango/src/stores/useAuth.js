@@ -28,7 +28,7 @@ export const useSecurityStore = defineStore("security", () => {
     }
 
     function updateToken(value, rememberMe) {
-        if (rememberMe) localStorage.setItem(SECURITY_TOKEN_KEY, token);
+        if (rememberMe) localStorage.setItem(SECURITY_TOKEN_KEY, value);
         setToken(value);
     }
 
@@ -65,11 +65,10 @@ export const useSecurityStore = defineStore("security", () => {
     }
 
     async function getCurrentUser() {
-
         if (user.value) return user.value;
         const result = await UserApi.get();
         setUser(result);
     }
 
-    return { user, isLoggedIn, initialize, login, logout, getCurrentUser, register, verify };
+    return {user, isLoggedIn, initialize, login, logout, getCurrentUser, register, verify };
 });

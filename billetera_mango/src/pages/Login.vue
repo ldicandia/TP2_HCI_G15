@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSecurityStore } from '@/stores/useAuth'
 import mangoLogo from '@/assets/mango-logo.png'
@@ -56,7 +56,11 @@ const errorMessage = ref('')
 async function handleLogin() {
   try {
     await securityStore.login({ email: email.value, password: password.value }, true)
-    router.push('/home') // Redirige a la página de inicio
+    if (securityStore.isLoggedIn) {
+      router.push('/home') // Redirige a la página de inicio
+    } else {
+      throw new Error('Token inválido o no configurado.')
+    }
   } catch (error) {
     console.error('Error al iniciar sesión:', error)
     errorMessage.value = 'Credenciales inválidas. Por favor, inténtalo de nuevo.'
