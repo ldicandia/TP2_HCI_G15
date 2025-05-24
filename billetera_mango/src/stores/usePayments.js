@@ -35,7 +35,7 @@ export const usePaymentsStore = defineStore("payments", () => {
     }
     async function getAll(queryParams = {}, controller = null) {
         let result = await PaymentsApi.getAll(queryParams, controller);
-        result = result.map((payment) => Object.assign(new Payment(), payment));
+        // result = result.map((payment) => Object.assign(new Payment(), payment));
         payments.value = result;
     }
     async function getById(id, controller = null) {

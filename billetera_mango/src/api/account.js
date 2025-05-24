@@ -10,7 +10,8 @@ class AccountApi {
     }
 
     static async rechargeBalance(amount, controller) {
-        return await Api.post(`${AccountApi.getUrl('reacharge')}`, true, amount, controller);
+        const url = `${AccountApi.getUrl('recharge')}?amount=${encodeURIComponent(amount)}`;
+        return await Api.post(url, true, {}, controller);
     }
 
     static async updateAlias(newAlias, controller) {

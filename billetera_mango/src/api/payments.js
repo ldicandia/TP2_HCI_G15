@@ -31,7 +31,7 @@ class PaymentsApi {
 
     static async getAll(queryParams = {}, controller) {
         const queryString = new URLSearchParams(queryParams).toString();
-        return await Api.get(`${PaymentsApi.getUrl()}?${queryString}`, true, controller);
+        return await Api.get(`${PaymentsApi.getUrl()}`, true, controller);
     }
 
     static async getById(id, controller) {

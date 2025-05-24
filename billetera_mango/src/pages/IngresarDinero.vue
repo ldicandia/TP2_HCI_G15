@@ -55,25 +55,56 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useSecurityStore } from '@/stores/useAuth'
+import { useAccountStore } from '@/stores/useAccount'
+import { usePaymentsStore } from '@/stores/usePayments'
 
 const router = useRouter()
+const securityStore = useSecurityStore()
+const accountStore = useAccountStore()
+const paymentsStore = usePaymentsStore()
 
 const source = ref('')
 const amount = ref('')
 const sources = ref(['Cuenta Bancaria', 'Tarjeta de Crédito', 'Tarjeta de Débito'])
-const history = ref([
-  { description: 'Ingreso desde cuenta bancaria', amount: '+ $2000' },
-  { description: 'Ingreso desde tarjeta de crédito', amount: '+ $1500' },
-])
+const history = ref([])
 
-function depositMoney() {
-  console.log('Ingresando dinero desde:', source.value, 'Monto:', amount.value)
+function formatHistory() {
+  // history.value = paymentsStore.payments.map(p => ({
+  //   description: p.description ?? `Recarga via ${source.value}`,
+  //   amount: `${p.amount >= 0 ? '+' : '-'} $${p.amount}`
+  // }))
+}
+
+onMounted(async () => {
+  await securityStore.initialize()
+  // carga detalles de cuenta (opcional si quieres mostrar saldo)
+  await accountStore.getAccountDetails()
+  // carga todas las transacciones
+  await paymentsStore.getAll()
+  formatHistory()
+})
+
+async function depositMoney() {
+  try {
+    // recarga saldo en la cuenta
+    await accountStore.rechargeBalance(Number(amount.value))
+    // refresca historial
+    await paymentsStore.getAll()
+    formatHistory()
+    // limpia campos
+    amount.value = ''
+    source.value = ''
+  }
+  catch (error) {
+    console.error('Error depositando dinero:', error)
+  }
 }
 
 function viewMore() {
-  console.log('Ver más historial')
+  router.push('/historial-ingresos') // o la ruta que definas
 }
 
 function goBack() {
