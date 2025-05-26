@@ -26,13 +26,6 @@
           <span>Tarjetas</span>
         </v-btn>
       </v-list-item>
-      <!-- Botón Cobros -->
-      <v-list-item>
-        <v-btn block class="menu-button" flat @click="goToCobros">
-          <v-icon class="icon">mdi-currency-usd</v-icon>
-          <span>Cobros</span>
-        </v-btn>
-      </v-list-item>
       <!-- Botón Pago de Servicios -->
       <v-list-item>
         <v-btn block class="menu-button" flat @click="goToPagoServicios">
