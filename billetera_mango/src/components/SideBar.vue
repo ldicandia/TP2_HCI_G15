@@ -55,10 +55,6 @@ function goToTarjetas() {
   router.push("/Tarjetas");
 }
 
-function goToCobros() {
-  router.push("/cobros");
-}
-
 function goToPagoServicios() {
   router.push("/pago-servicios");
 }
