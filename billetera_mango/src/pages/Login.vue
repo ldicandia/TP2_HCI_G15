@@ -14,7 +14,7 @@
           density="compact"
           class="mb-4"
           hide-details
-          color="cyan"
+          color="#6291da"
         />
         <v-text-field
           v-model="password"
@@ -24,7 +24,7 @@
           density="compact"
           class="mb-2"
           hide-details
-          color="cyan"
+          color="#6291da"
         />
         <!-- Mensaje de error -->
         <div v-if="errorMessage" class="error-message text-red text-caption mb-4">

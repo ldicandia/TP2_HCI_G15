@@ -49,8 +49,10 @@
 <script setup>
 import { useRouter } from "vue-router";
 import mangoLogo from "@/assets/mango-logo.png";
+import { useSecurityStore } from "@/stores/useAuth";
 
 const router = useRouter();
+const securityStore = useSecurityStore();
 
 function goToHome() {
   router.push("/Home");
@@ -69,6 +71,7 @@ function goToPagoServicios() {
 }
 
 function goToLogin() {
+  securityStore.logout();
   router.push("/login");
 }
 
@@ -90,10 +93,11 @@ function goToLogin() {
 }
 
 .logout-button {
-  justify-content: flex-start;
-  
+  justify-content: center;
 }
 
-
-
+/* Añadido: margen derecho para separar icono y texto */
+.icon {
+  margin-right: 8px;
+}
 </style>

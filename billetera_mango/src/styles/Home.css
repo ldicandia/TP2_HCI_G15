@@ -56,6 +56,13 @@
 
 .action-button {
   margin-bottom: 16px;
+  display: flex;            /* Asegura que v-btn sea flex */
+  justify-content: center;  /* Centra ícono + texto horizontalmente */
+  align-items: center;      /* Centra verticalmente */
+}
+
+.action-button .v-icon {
+  margin-right: 1em;      /* Espacio entre ícono y texto */
 }
 
 .movimientos-card {

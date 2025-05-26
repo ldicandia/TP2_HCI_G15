@@ -13,17 +13,6 @@
             <v-card class="pa-4" color="surface">
               <h3 class="mb-4">Enviar Dinero</h3>
 
-              <!-- NUEVO: Campo Descripción -->
-              <v-text-field
-                v-model="description"
-                label="Descripción"
-                variant="outlined"
-                density="compact"
-                class="mb-4"
-                hide-details
-                color="cyan"
-              />
-
               <!-- Selector de método -->
               <v-radio-group v-model="method" row class="mb-4">
                 <v-radio label="CVU" value="cvu" />
@@ -49,6 +38,17 @@
                 variant="outlined"
                 density="compact"
                 type="number"
+                class="mb-4"
+                hide-details
+                color="cyan"
+              />
+
+              <!-- Campo Descripción debajo de cantidad -->
+              <v-text-field
+                v-model="description"
+                label="Descripción"
+                variant="outlined"
+                density="compact"
                 class="mb-4"
                 hide-details
                 color="cyan"

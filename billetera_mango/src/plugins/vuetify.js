@@ -21,7 +21,7 @@ export default createVuetify({
         colors: {
           background: '#0e1628', // .bg-dark
           surface: '#2a3b4c', // .login-card and .logo-container
-          button: '#00acc1', // .login-button
+          button: '#2a64b7', // .login-button
           container: '#2a3b4c', // .logo-container
           error: '#f44336',
           info: '#2196f3',

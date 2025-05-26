@@ -1,6 +1,6 @@
 import { ref } from "vue"
 import { defineStore } from "pinia"
-import {Payment, PaymentsApi } from "@/api/payments";
+import { Payment, PaymentsApi } from "@/api/payments";
 
 export const usePaymentsStore = defineStore("payments", () => {
     const payments = ref([]);
@@ -34,9 +34,9 @@ export const usePaymentsStore = defineStore("payments", () => {
         return result;
     }
     async function getAll(queryParams = {}, controller = null) {
-        let result = await PaymentsApi.getAll(queryParams, controller);
-        // result = result.map((payment) => Object.assign(new Payment(), payment));
-        payments.value = result;
+        const result = await PaymentsApi.getAll(queryParams, controller);
+        // mapear a instancias de Payment
+        payments.value = result.map(p => Object.assign(new Payment(), p));
     }
     async function getById(id, controller = null) {
         const result = await PaymentsApi.getById(id, controller);

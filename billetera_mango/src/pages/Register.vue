@@ -14,7 +14,7 @@
           density="compact"
           class="mb-4"
           hide-details
-          color="cyan"
+          color="#6291da"
           :error="!!errors.firstName"
           :error-messages="errors.firstName"
         />
@@ -25,7 +25,7 @@
           density="compact"
           class="mb-4"
           hide-details
-          color="cyan"
+          color="#6291da"
           :error="!!errors.lastName"
           :error-messages="errors.lastName"
         />
@@ -36,7 +36,7 @@
           density="compact"
           class="mb-4"
           hide-details
-          color="cyan"
+          color="#6291da"
           :error="!!errors.birthDate"
           :error-messages="errors.birthDate"
         />
@@ -47,7 +47,7 @@
           density="compact"
           class="mb-4"
           hide-details
-          color="cyan"
+          color="#6291da"
           :error="!!errors.email"
           :error-messages="errors.email"
         />
@@ -59,7 +59,7 @@
           density="compact"
           class="mb-4"
           hide-details
-          color="cyan"
+          color="#6291da"
           :error="!!errors.password"
           :error-messages="errors.password"
         />
@@ -71,7 +71,7 @@
           density="compact"
           class="mb-2"
           hide-details
-          color="cyan"
+          color="#6291da"
           :error="!!errors.confirmPassword"
           :error-messages="errors.confirmPassword"
         />
