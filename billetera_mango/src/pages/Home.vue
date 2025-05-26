@@ -44,6 +44,12 @@
                   <v-icon>mdi-link-variant</v-icon>
                   Generar Enlace de Pago
                 </v-btn>
+
+                <!-- Nuevo botón -->
+                <v-btn block @click="showLinkDialog = true" class="action-button" color="button">
+                  <v-icon>mdi-link</v-icon>
+                  Pagar con Enlace
+                </v-btn>
               </v-col>
               <v-col cols="6">
                 <v-card class="movimientos-card" color="surface">
@@ -94,6 +100,32 @@
       </v-card>
     </v-dialog>
 
+    <!-- Nuevo diálogo para pagar con enlace -->
+    <v-dialog v-model="showLinkDialog" max-width="400px">
+      <v-card>
+        <v-card-title>Pagar enlace de pago</v-card-title>
+        <v-card-text>
+          <v-form>
+            <v-text-field
+              v-model="linkInput"
+              label="Enlace de pago"
+              required
+            />
+            <!-- Nuevo campo para cardId (opcional) -->
+            <v-text-field
+              v-model="cardId"
+              label="ID de la tarjeta (opcional)"
+            />
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn text @click="showLinkDialog = false">Cancelar</v-btn>
+          <v-btn color="primary" @click="onPayLink">Pagar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <!-- Snackbar para notificaciones -->
     <v-snackbar
       v-model="snackbar"
@@ -125,9 +157,13 @@ const paymentsStore = usePaymentsStore()
 const { account }  = storeToRefs(accountStore)
 const { payments } = storeToRefs(paymentsStore)
 
-const showDialog         = ref(false)
+const showDialog      = ref(false)
+const showLinkDialog  = ref(false)
 const paymentDescription = ref('')
 const paymentAmount      = ref(null)
+const linkInput        = ref('')
+// --- nuevo state para cardId ---
+const cardId           = ref('')
 
 // Estados del snackbar
 const snackbar     = ref(false)
@@ -165,6 +201,31 @@ async function onConfirm() {
     }
   }
   onCancel()
+}
+
+// Nueva función para procesar el enlace
+async function onPayLink() {
+  try {
+    const urlObj = new URL(linkInput.value)
+    const uuid   = urlObj.searchParams.get('uuid')
+    if (uuid) {
+      const cardIdValue = cardId.value?.trim() || null
+      await paymentsStore.pushPayment({ uuid, cardId: cardIdValue })
+      snackbarText.value = 'Pago con enlace realizado'
+      snackbar.value     = true
+      // recargo movimientos
+      await paymentsStore.getAll()
+      // recargo saldo
+      await accountStore.getAccountDetails()
+      linkInput.value = ''
+      cardId.value    = ''
+    }
+  } catch (err) {
+    console.error('Error procesando enlace:', err)
+  } finally {
+    // Cierra el formulario siempre
+    showLinkDialog.value = false
+  }
 }
 
 onMounted(async () => {
