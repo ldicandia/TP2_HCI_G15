@@ -55,7 +55,7 @@
                 <v-card class="movimientos-card" color="surface">
                   <h3>Movimientos</h3>
                   <div v-if="payments.length">
-                    <div v-for="(mov, index) in payments" :key="mov.id">
+                    <div v-for="(mov, index) in displayedPayments" :key="mov.id">
                       <p class="d-flex justify-space-between">
                         <span>
                           {{ mov.receiver.firstName }} {{ mov.receiver.lastName }}
@@ -63,9 +63,11 @@
                           <small class="text-caption">{{ mov.description }}</small>
                         </span>
                         <span
-                          :class="mov.receiver.id === account.id
-                            ? 'text-success'
-                            : 'text-error'"
+                          :class="mov.pending
+                            ? 'text-warning'
+                            : (mov.receiver.id === account.id
+                               ? 'text-success'
+                               : 'text-error')"
                         >
                           {{ formatCurrency(mov.amount) }}
                         </span>
@@ -74,6 +76,12 @@
                         v-if="index < payments.length - 1"
                         class="my-2"
                       />
+                    </div>
+                    <!-- botón Ver más / Ver menos -->
+                    <div v-if="payments.length > 5" class="text-center mt-2">
+                      <v-btn text @click="showMore = !showMore" color="button">
+                        {{ showMore ? 'Ver menos' : 'Ver más' }}
+                      </v-btn>
                     </div>
                   </div>
                   <p v-else>Cargando movimientos...</p>
@@ -154,7 +162,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useAccountStore } from '@/stores/useAccount.js'
@@ -168,6 +176,15 @@ const paymentsStore = usePaymentsStore()
 
 const { account }  = storeToRefs(accountStore)
 const { payments } = storeToRefs(paymentsStore)
+
+// --- nuevo estado para controlar “ver más” ---
+const showMore = ref(false)
+// --- computado que selecciona los movs a mostrar ---
+const displayedPayments = computed(() =>
+  showMore.value
+    ? payments.value
+    : payments.value.slice(0, 5)
+)
 
 const showDialog      = ref(false)
 const showLinkDialog  = ref(false)
