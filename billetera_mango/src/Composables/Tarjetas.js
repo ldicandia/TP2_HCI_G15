@@ -1,12 +1,14 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router"; // Import useRouter if needed for navigation/replace
 import { useSecurityStore } from "@/stores/useAuth";
+import { useCardStore } from "@/stores/useCard";
 
 // --- Import card images ---
 import visaLogo from "@/assets/Tarjetas/Visa.png";
 import mastercardLogo from "@/assets/Tarjetas/MasterCard.png";
 import amexLogo from "@/assets/Tarjetas/AmericanExpress.jpg";
 import genericCardLogo from "@/assets/Tarjetas/Generic.png";
+
 
 export function useTarjetasLogic() {
   // --- State ---
@@ -23,18 +25,21 @@ export function useTarjetasLogic() {
   });
 
   const securityStore = useSecurityStore(); // Assuming this is a Pinia store for authentication/security
+  const cardStore = useCardStore(); // Assuming this is a Pinia store for card management
   const route = useRoute();
   const router = useRouter(); // Get router instance if needed for replace
 
   // --- Lifecycle Hook ---
   onMounted(async () => {
-    securityStore.initialize(); // Initialize security store if needed
+    securityStore.initialize();
+    // Load cards from API
+    await cardStore.getAll();
+    // Sync local ref with store
+    cards.value = cardStore.cards;
+    
     if (route.query.action === "add") {
       dialog.value = true;
-      // Optional: Remove query param
-      // router.replace({ query: { ...route.query, action: undefined } });
     }
-    // Fetch actual cards logic would go here
   });
 
   // --- Validation Rules ---
@@ -76,23 +81,45 @@ export function useTarjetasLogic() {
     return genericCardLogo;
   };
 
+  // --- Helper to map UI type to API type ---
+  const getApiCardType = (uiType) => {
+    if (!uiType) return null
+    return uiType.toLowerCase().includes('crédito') ? 'CREDIT' : 'DEBIT'
+  }
+
   // --- Methods ---
   const addCard = async () => {
-    // Note: form.value here refers to the ref defined *within this composable*.
-    // It needs to be correctly bound in the component template.
-    if (!form.value) return;
-    const { valid } = await form.value.validate();
-
+    if (!form.value) return
+    const { valid } = await form.value.validate()
     if (valid) {
-      const cardNumberClean = newCard.value.number.replace(/\s/g, "");
-      newCard.value.last4 = cardNumberClean.slice(-4);
-      cards.value.push({ ...newCard.value });
-      closeDialog();
+      const plainNumber = newCard.value.number.replace(/\s/g, "")
+      const apiType = getApiCardType(newCard.value.type)
+      // Llamada a la API con el tipo corregido
+      const created = await cardStore.add({
+        number: plainNumber,
+        fullName: newCard.value.name,
+        cvv: newCard.value.cvv,
+        expirationDate: newCard.value.expiry,
+        type: apiType,
+      })
+
+      console.log("Tarjeta creada:", created);
+      // Opcional: guardar los últimos 4 dígitos
+      created.last4 = plainNumber.slice(-4)
+      // Refrescar lista
+      cards.value = cardStore.cards
+      closeDialog()
     }
   };
 
-  const removeCard = (index) => {
-    cards.value.splice(index, 1);
+  const removeCard = async (index) => {
+    const card = cards.value[index];
+    if (card.id) {
+      await cardStore.remove(card.id);
+      console.log("removed card:", card.id);
+      // After deletion, cards.value is already updated by the store
+      cards.value = cardStore.cards;
+    }
   };
 
   const closeDialog = () => {
