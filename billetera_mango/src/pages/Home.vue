@@ -55,13 +55,25 @@
                 <v-card class="movimientos-card" color="surface">
                   <h3>Movimientos</h3>
                   <div v-if="payments.length">
-                    <div v-for="mov in payments" :key="mov.id">
-                      <p>
-                        {{ mov.date }} – {{ mov.type }}:
-                        <span :class="mov.amount < 0 ? 'text-error' : 'text-success'">
+                    <div v-for="(mov, index) in payments" :key="mov.id">
+                      <p class="d-flex justify-space-between">
+                        <span>
+                          {{ mov.receiver.firstName }} {{ mov.receiver.lastName }}
+                          <br/>
+                          <small class="text-caption">{{ mov.description }}</small>
+                        </span>
+                        <span
+                          :class="mov.receiver.id === account.id
+                            ? 'text-success'
+                            : 'text-error'"
+                        >
                           {{ formatCurrency(mov.amount) }}
                         </span>
                       </p>
+                      <v-divider
+                        v-if="index < payments.length - 1"
+                        class="my-2"
+                      />
                     </div>
                   </div>
                   <p v-else>Cargando movimientos...</p>
