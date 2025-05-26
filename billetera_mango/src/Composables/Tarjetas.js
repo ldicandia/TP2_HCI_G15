@@ -1,5 +1,6 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router"; // Import useRouter if needed for navigation/replace
+import { useSecurityStore } from "@/stores/useAuth";
 
 // --- Import card images ---
 import visaLogo from "@/assets/Tarjetas/Visa.png";
@@ -21,11 +22,13 @@ export function useTarjetasLogic() {
     last4: "",
   });
 
+  const securityStore = useSecurityStore(); // Assuming this is a Pinia store for authentication/security
   const route = useRoute();
   const router = useRouter(); // Get router instance if needed for replace
 
   // --- Lifecycle Hook ---
-  onMounted(() => {
+  onMounted(async () => {
+    securityStore.initialize(); // Initialize security store if needed
     if (route.query.action === "add") {
       dialog.value = true;
       // Optional: Remove query param
