@@ -18,6 +18,7 @@ export const usePaymentsStore = defineStore("payments", () => {
         return result;
     }
     async function pushPayment(paymentData) {
+        console.log("Pulling payment with data:", paymentData);
         const result = await PaymentsApi.pushPayment(paymentData);
         return result;
     }

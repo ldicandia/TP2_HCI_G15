@@ -13,8 +13,11 @@ class PaymentsApi {
         return await Api.post(`${PaymentsApi.getUrl('pull')}`, true, paymentData, controller);
     }
 
-    static async pushPayment(paymentData, controller) {
-        return await Api.put(`${PaymentsApi.getUrl('push')}`, true, paymentData, controller);
+    static async pushPayment({ uuid, cardId }, controller) {
+        const params = new URLSearchParams({ uuid });
+        if (cardId != null) params.append('cardId', cardId);
+        const url = `${PaymentsApi.getUrl('push')}?${params.toString()}`;
+        return await Api.put(url, true, { uuid, cardId }, controller);
     }
 
     static async transferByEmail(email, paymentData, controller) {

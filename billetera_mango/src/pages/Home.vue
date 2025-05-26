@@ -40,9 +40,9 @@
                   <v-icon>mdi-cash-plus</v-icon>
                   Ingresar Dinero
                 </v-btn>
-                <v-btn block class="action-button" color="button">
+                <v-btn block @click="showDialog = true" class="action-button" color="button">
                   <v-icon>mdi-link-variant</v-icon>
-                  Enlace de pago
+                  Generar Enlace de Pago
                 </v-btn>
               </v-col>
               <v-col cols="6">
@@ -66,24 +66,72 @@
         </v-row>
       </v-container>
     </v-main>
+
+    <!-- Dialog para crear enlace de pago -->
+    <v-dialog v-model="showDialog" max-width="400px">
+      <v-card>
+        <v-card-title>Nuevo enlace de pago</v-card-title>
+        <v-card-text>
+          <v-form ref="form">
+            <v-text-field
+              v-model="paymentDescription"
+              label="Descripción"
+              required
+            />
+            <v-text-field
+              v-model.number="paymentAmount"
+              label="Monto"
+              type="number"
+              required
+            />
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn text @click="onCancel">Cancelar</v-btn>
+          <v-btn color="primary" @click="onConfirm">Generar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Snackbar para notificaciones -->
+    <v-snackbar
+      v-model="snackbar"
+      timeout="3000"
+      top
+      color="success"
+    >
+      {{ snackbarText }}
+      <template #action>
+        <v-btn text @click="snackbar = false">Cerrar</v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAccountStore } from '@/stores/useAccount.js'
 import { useSecurityStore } from '@/stores/useAuth'
 import { usePaymentsStore } from '@/stores/usePayments'
 
-const router         = useRouter()
-const accountStore   = useAccountStore()
-const securityStore  = useSecurityStore()
-const paymentsStore  = usePaymentsStore()
+const router        = useRouter()
+const accountStore  = useAccountStore()
+const securityStore = useSecurityStore()
+const paymentsStore = usePaymentsStore()
 
-const { account }   = storeToRefs(accountStore)
-const { payments }  = storeToRefs(paymentsStore)
+const { account }  = storeToRefs(accountStore)
+const { payments } = storeToRefs(paymentsStore)
+
+const showDialog         = ref(false)
+const paymentDescription = ref('')
+const paymentAmount      = ref(null)
+
+// Estados del snackbar
+const snackbar     = ref(false)
+const snackbarText = ref('')
 
 function formatCurrency(value) {
   const sign = value < 0 ? '-' : ''
@@ -93,6 +141,31 @@ function formatCurrency(value) {
 
 function goEnviarDinero()   { router.push('/enviar-dinero') }
 function goIngresarDinero() { router.push('/ingresar-dinero') }
+
+function onCancel() {
+  paymentDescription.value = ''
+  paymentAmount.value      = null
+  showDialog.value         = false
+}
+
+async function onConfirm() {
+  const payment = await paymentsStore.pullPayment({
+    amount:      paymentAmount.value,
+    description: paymentDescription.value
+  })
+  if (payment && payment.uuid) {
+    const url = `http://localhost:8080/api/payment/push?uuid=${payment.uuid}`
+    try {
+      await navigator.clipboard.writeText(url)
+      // Reemplazo del alert por snackbar
+      snackbarText.value = 'Enlace de pago copiado: ' + url
+      snackbar.value     = true
+    } catch (err) {
+      console.error('Error copiando al portapapeles:', err)
+    }
+  }
+  onCancel()
+}
 
 onMounted(async () => {
   securityStore.initialize()
