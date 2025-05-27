@@ -23,27 +23,37 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useSecurityStore } from '@/stores/useAuth'
 
 const securityStore = useSecurityStore()
-
 const router = useRouter()
+const route = useRoute()
+
+// recuperamos email y password de los query params
+const email = ref(route.query.email || '')
+const password = ref(route.query.password || '')
 const verificationCode = ref('')
 const errorMessage = ref('')
-
-
 
 async function handleVerify() {
   try {
     await securityStore.verify(verificationCode.value)
-    router.push('/home')
-    console.log('Código de verificación exitoso')
+    // una vez verificado, hacemos el login
+    await securityStore.login(
+      { email: email.value, password: password.value },
+      true
+    )
+    if (securityStore.isLoggedIn) {
+      router.push('/home')
+    } else {
+      throw new Error('Token inválido o no configurado.')
+    }
   } catch (error) {
-    console.error('Error al verificar el código:', error)
-    errorMessage.value = 'El código de verificación es inválido o ha expirado.'
+    console.error('Error en verificación o login:', error)
+    errorMessage.value =
+      'Verificación o credenciales inválidas. Por favor, inténtalo de nuevo.'
   }
 }
 </script>
-
 <style scoped src="@/styles/Login.css"></style>

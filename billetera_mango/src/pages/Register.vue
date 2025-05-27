@@ -175,7 +175,10 @@ async function handleRegister() {
       password: password.value,
       metadata: {}
     })
-    router.push('/verify')
+    router.push({
+      path: '/verify',
+      query: { email: email.value, password: password.value }
+    })
   } catch (err) {
     console.error('Error al registrar usuario:', err)
   }
