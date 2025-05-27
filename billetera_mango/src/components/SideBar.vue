@@ -84,8 +84,6 @@ function goToLogin() {
 .logout-button {
   justify-content: center;
 }
-
-/* Añadido: margen derecho para separar icono y texto */
 .icon {
   margin-right: 8px;
 }

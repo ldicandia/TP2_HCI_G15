@@ -20,7 +20,7 @@ const routes = [
     component: RegisterView,
   },
   {
-    path: "/home", // Agrega la ruta para Home
+    path: "/home",
     name: "Home",
     component: HomeView,
   },

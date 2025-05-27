@@ -57,7 +57,7 @@ async function handleLogin() {
   try {
     await securityStore.login({ email: email.value, password: password.value }, true)
     if (securityStore.isLoggedIn) {
-      router.push('/home') // Redirige a la página de inicio
+      router.push('/home')
     } else {
       throw new Error('Token inválido o no configurado.')
     }
@@ -68,7 +68,7 @@ async function handleLogin() {
 }
 
 function goToRegister() {
-  router.push('/register') // Redirige a la página de registro
+  router.push('/register')
 }
 </script>
 

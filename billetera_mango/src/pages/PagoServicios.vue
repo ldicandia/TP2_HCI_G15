@@ -53,7 +53,6 @@
 import { ref } from 'vue'
 import GoBackButton from '@/components/GoBackButton.vue'
 
-// Lista de servicios disponibles con íconos representativos
 const services = [
   { name: 'Luz', icon: 'mdi-lightbulb' },
   { name: 'Gas', icon: 'mdi-fire' },
@@ -65,15 +64,12 @@ const services = [
   { name: 'Medicina prepaga', icon: 'mdi-hospital' }
 ]
 
-// Variable para almacenar el servicio seleccionado
 const selectedService = ref(null)
 
-// Función para seleccionar un servicio
 function selectService(service) {
   selectedService.value = service
 }
 
-// Función para volver a la selección de servicios
 function backToSelection() {
   selectedService.value = null
 }

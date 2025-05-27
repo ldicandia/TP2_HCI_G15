@@ -188,16 +188,13 @@ const { cards }    = storeToRefs(cardStore)
 // --- opciones para el select de tarjetas ---
 const cardOptions = computed(() =>
   cards.value.map(c => {
-    // intenta usar c.last4, si no existe, extrae de c.number
     const last4 = c.last4 ?? (c.number?.slice(-4) ?? '0000')
     cardSelectedId.value = c.id // actualiza el id seleccionado
     return `${c.type} **** **** **** ${last4}`
   })
 )
 
-// --- nuevo estado para controlar “ver más” ---
 const showMore = ref(false)
-// --- computado que selecciona los movs a mostrar ---
 const displayedPayments = computed(() =>
   showMore.value
     ? payments.value
@@ -210,8 +207,6 @@ const paymentDescription = ref('')
 const paymentAmount      = ref(null)
 const linkInput        = ref('')
 const cardId           = ref(null)   // ahora seleccionado por el select
-
-// Estados del snackbar
 const snackbar     = ref(false)
 const snackbarText = ref('')
 
@@ -239,7 +234,6 @@ async function onConfirm() {
     const url = `http://localhost:8080/api/payment/push?uuid=${payment.uuid}`
     try {
       await navigator.clipboard.writeText(url)
-      // Reemplazo del alert por snackbar
       snackbarText.value = 'Enlace de pago copiado: ' + url
       snackbar.value     = true
     } catch (err) {
@@ -249,7 +243,6 @@ async function onConfirm() {
   onCancel()
 }
 
-// Nueva función para procesar el enlace
 async function onPayLink() {
   try {
     const urlObj = new URL(linkInput.value)
@@ -258,12 +251,10 @@ async function onPayLink() {
       const cardIdValue = cardId.value?.trim() || null
       
       await paymentsStore.pushPayment({ uuid, cardId: cardSelectedId.value })
-      cardSelectedId.value = ref(null) // Resetea el id seleccionado
+      cardSelectedId.value = ref(null)
       snackbarText.value = 'Pago con enlace realizado'
       snackbar.value     = true
-      // recargo movimientos
       await paymentsStore.getAll()
-      // recargo saldo
       await accountStore.getAccountDetails()
       linkInput.value = ''
       cardId.value    = ''
@@ -271,7 +262,6 @@ async function onPayLink() {
   } catch (err) {
     console.error('Error procesando enlace:', err)
   } finally {
-    // Cierra el formulario siempre
     showLinkDialog.value = false
   }
 }
@@ -280,8 +270,8 @@ onMounted(async () => {
   securityStore.initialize()
   try {
     await accountStore.getAccountDetails()
-    await paymentsStore.getAll()       // carga el historial
-    await cardStore.getAll()      // cargar las tarjetas
+    await paymentsStore.getAll()       
+    await cardStore.getAll()    
   } catch (e) {
     console.error('Error al cargar datos:', e)
   }

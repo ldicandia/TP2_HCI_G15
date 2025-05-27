@@ -1,7 +1,3 @@
-<!-- ventana que me muestra la lista de mis tarjetas, con una opcion para desvincular cada una
- tmn hay una opcion para vincular una nueva tarjeta
-
- los botones "vincular" y "desvincular" de la pagina de inicio tmbn deberia entrar directamente a esas opciones-->
 
 <template>
   <v-container>
@@ -170,11 +166,9 @@
 </template>
 
 <script setup>
-// Import the composable function
-import { useTarjetasLogic } from "@/Composables/Tarjetas.js"; // Adjust path if needed
+import { useTarjetasLogic } from "@/Composables/Tarjetas.js";
 
-
-// Call the composable and destructure the returned state and methods
+s
 const {
   dialog,
   form, // Destructure the ref
@@ -187,8 +181,6 @@ const {
   closeDialog,
 } = useTarjetasLogic();
 
-// No other JavaScript needed here unless you have component-specific logic
-// that doesn't belong in the composable.
 </script>
 
 <style scoped src="@/styles/Tarjetas.css"></style>

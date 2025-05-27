@@ -101,10 +101,10 @@ const birthDate = ref('')
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
-const errors = ref({}) // Almacena los mensajes de error
+const errors = ref({}) 
 
 function validateFields() {
-  errors.value = {} // Reinicia los errores
+  errors.value = {} 
 
   if (!firstName.value.trim()) {
     errors.value.firstName = 'El nombre es obligatorio.'
@@ -131,7 +131,7 @@ function validateFields() {
     errors.value.confirmPassword = 'Las contraseñas no coinciden.'
   }
 
-  return Object.keys(errors.value).length === 0 // Retorna true si no hay errores
+  return Object.keys(errors.value).length === 0
 }
 
 async function handleRegister() {
@@ -150,14 +150,14 @@ async function handleRegister() {
       metadata: {}
     })
     console.log('Usuario registrado exitosamente')
-    router.push('/verify') // Redirige a la pantalla de verificación
+    router.push('/verify') 
   } catch (error) {
     console.error('Error al registrar usuario:', error)
   }
 }
 
 function goToLogin() {
-  router.push('/login') // Redirige a la página de inicio de sesión
+  router.push('/login')
 }
 </script>
 

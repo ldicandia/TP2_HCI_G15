@@ -1,37 +1,37 @@
 .card-preview-image {
-  border: 1px solid rgba(var(--v-border-color), 0.3); /* Optional: add a light border */
-  border-radius: 8px; /* Optional: round corners */
-  background-color: #eee; /* Light background for images with transparency */
+  border: 1px solid rgba(var(--v-border-color), 0.3); 
+  border-radius: 8px; 
+  background-color: #eee; 
 }
 
 .card-display {
-  position: relative; /* Needed for absolute positioning of overlay */
+  position: relative; 
 }
 
 .card-image {
-  border-radius: inherit; /* Inherit border radius from v-card */
-  /* You might need to adjust background properties if images have transparency */
+  border-radius: inherit; 
+  
 }
 
 .card-overlay-text {
   position: absolute;
-  bottom: 8px; /* Position at the bottom */
-  left: 16px; /* Add some padding */
-  color: white; /* Or a contrasting color */
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  bottom: 8px; 
+  left: 16px; 
+  color: white; 
+  background-color: rgba(0, 0, 0, 0.5); 
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 0.9em;
   font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Text shadow for readability */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); 
 }
 
 .card-actions {
-  padding: 8px 16px; /* Adjust padding */
+  padding: 8px 16px; 
   background-color: rgba(
     var(--v-theme-surface),
     0.8
-  ); /* Optional: slight background */
+  ); 
 }
 
 .card-type-text {
@@ -39,12 +39,11 @@
   color: rgba(
     var(--v-theme-on-surface),
     var(--v-medium-emphasis-opacity)
-  ); /* Use theme color */
-  flex-grow: 1; /* Allow text to take available space */
+  );
+  flex-grow: 1;
   text-align: left;
 }
 
-/* Remove default list item styling if previously added */
 .v-list-item {
   border: none;
   padding: 0;

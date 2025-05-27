@@ -57,20 +57,6 @@
               <v-btn block color="button" @click="sendMoney">Enviar</v-btn>
             </v-card>
           </v-col>
-          <v-col cols="12" md="6">
-            <v-card class="pa-4" color="surface">
-              <h3>Historial</h3>
-              <v-list>
-                <v-list-item v-for="(item, index) in history" :key="index">
-                  <v-list-item-content>
-                    <v-list-item-title>{{ item.description }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ item.amount }}</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-              <v-btn block color="button" @click="viewMore">Ver más</v-btn>
-            </v-card>
-          </v-col>
         </v-row>
       </v-container>
     </v-main>
@@ -103,10 +89,8 @@ const paymentsStore = usePaymentsStore()
 const recipient = ref('')
 const amount = ref('')
 const method = ref('cvu')
-const description = ref('')      // <--- nueva ref
+const description = ref('')      
 const history = ref([])
-
-// --- estados para snackbar ---
 const snackbar = ref(false)
 const snackbarText = ref('')
 
@@ -135,26 +119,15 @@ async function sendMoney() {
       result = await paymentsStore.transferByAlias(recipient.value, paymentData)
     }
 
-    // limpia campos
     recipient.value = ''
     amount.value = ''
-    description.value = ''    // <---- limpiar descripción
-    // muestra notificación
+    description.value = ''   
     snackbarText.value = 'Dinero enviado correctamente'
     snackbar.value = true
   }
   catch (error) {
     console.error('Error enviando dinero:', error)
   }
-}
-
-function viewMore() {
-  // Navegar a una página de historial completo o cargar más
-  router.push('/historial-pagos')
-}
-
-function goBack() {
-  router.push('/home')
 }
 </script>
 

@@ -37,7 +37,7 @@ const errorMessage = ref('')
 async function handleVerify() {
   try {
     await securityStore.verify(verificationCode.value)
-    router.push('/home') // Redirige al usuario a la página principal
+    router.push('/home')
     console.log('Código de verificación exitoso')
   } catch (error) {
     console.error('Error al verificar el código:', error)
