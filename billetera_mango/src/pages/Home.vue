@@ -131,10 +131,13 @@
               label="Enlace de pago"
               required
             />
-            <!-- Nuevo campo para cardId (opcional) -->
-            <v-text-field
+            <v-select
               v-model="cardId"
-              label="ID de la tarjeta (opcional)"
+              :items="cardOptions"
+              item-text="name"
+              item-value="id"
+              label="Seleccionar tarjeta (opcional)"
+              clearable
             />
           </v-form>
         </v-card-text>
@@ -168,14 +171,29 @@ import { storeToRefs } from 'pinia'
 import { useAccountStore } from '@/stores/useAccount.js'
 import { useSecurityStore } from '@/stores/useAuth'
 import { usePaymentsStore } from '@/stores/usePayments'
+import { useCardStore } from '@/stores/useCard'
 
 const router        = useRouter()
 const accountStore  = useAccountStore()
 const securityStore = useSecurityStore()
 const paymentsStore = usePaymentsStore()
+const cardStore    = useCardStore()
 
-const { account }  = storeToRefs(accountStore)
-const { payments } = storeToRefs(paymentsStore)
+const cardSelectedId = ref(null)
+
+const { account }   = storeToRefs(accountStore)
+const { payments }  = storeToRefs(paymentsStore)
+const { cards }    = storeToRefs(cardStore)
+
+// --- opciones para el select de tarjetas ---
+const cardOptions = computed(() =>
+  cards.value.map(c => {
+    // intenta usar c.last4, si no existe, extrae de c.number
+    const last4 = c.last4 ?? (c.number?.slice(-4) ?? '0000')
+    cardSelectedId.value = c.id // actualiza el id seleccionado
+    return `${c.type} **** **** **** ${last4}`
+  })
+)
 
 // --- nuevo estado para controlar “ver más” ---
 const showMore = ref(false)
@@ -191,8 +209,7 @@ const showLinkDialog  = ref(false)
 const paymentDescription = ref('')
 const paymentAmount      = ref(null)
 const linkInput        = ref('')
-// --- nuevo state para cardId ---
-const cardId           = ref('')
+const cardId           = ref(null)   // ahora seleccionado por el select
 
 // Estados del snackbar
 const snackbar     = ref(false)
@@ -239,7 +256,9 @@ async function onPayLink() {
     const uuid   = urlObj.searchParams.get('uuid')
     if (uuid) {
       const cardIdValue = cardId.value?.trim() || null
-      await paymentsStore.pushPayment({ uuid, cardId: cardIdValue })
+      
+      await paymentsStore.pushPayment({ uuid, cardId: cardSelectedId.value })
+      cardSelectedId.value = ref(null) // Resetea el id seleccionado
       snackbarText.value = 'Pago con enlace realizado'
       snackbar.value     = true
       // recargo movimientos
@@ -262,6 +281,7 @@ onMounted(async () => {
   try {
     await accountStore.getAccountDetails()
     await paymentsStore.getAll()       // carga el historial
+    await cardStore.getAll()      // cargar las tarjetas
   } catch (e) {
     console.error('Error al cargar datos:', e)
   }

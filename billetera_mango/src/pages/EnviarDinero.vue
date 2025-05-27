@@ -74,6 +74,19 @@
         </v-row>
       </v-container>
     </v-main>
+
+    <!-- Snackbar para notificaciones -->
+    <v-snackbar
+      v-model="snackbar"
+      timeout="3000"
+      top
+      color="success"
+    >
+      {{ snackbarText }}
+      <template #action>
+        <v-btn text @click="snackbar = false">Cerrar</v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -92,6 +105,10 @@ const amount = ref('')
 const method = ref('cvu')
 const description = ref('')      // <--- nueva ref
 const history = ref([])
+
+// --- estados para snackbar ---
+const snackbar = ref(false)
+const snackbarText = ref('')
 
 // Al montar, carga el historial desde la API
 onMounted(async () => {
@@ -122,6 +139,9 @@ async function sendMoney() {
     recipient.value = ''
     amount.value = ''
     description.value = ''    // <---- limpiar descripción
+    // muestra notificación
+    snackbarText.value = 'Dinero enviado correctamente'
+    snackbar.value = true
   }
   catch (error) {
     console.error('Error enviando dinero:', error)

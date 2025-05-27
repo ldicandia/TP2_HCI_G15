@@ -51,6 +51,19 @@
         </v-row>
       </v-container>
     </v-main>
+
+    <!-- Snackbar para notificaciones -->
+    <v-snackbar
+      v-model="snackbar"
+      timeout="3000"
+      top
+      color="success"
+    >
+      {{ snackbarText }}
+      <template #action>
+        <v-btn text @click="snackbar = false">Cerrar</v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -70,6 +83,10 @@ const source = ref('')
 const amount = ref('')
 const sources = ref(['Cuenta Bancaria', 'Tarjeta de Crédito', 'Tarjeta de Débito'])
 const history = ref([])
+
+// --- estados para snackbar ---
+const snackbar = ref(false)
+const snackbarText = ref('')
 
 function formatHistory() {
   // history.value = paymentsStore.payments.map(p => ({
@@ -97,6 +114,9 @@ async function depositMoney() {
     // limpia campos
     amount.value = ''
     source.value = ''
+    // muestra notificación
+    snackbarText.value = 'Dinero ingresado correctamente'
+    snackbar.value = true
   }
   catch (error) {
     console.error('Error depositando dinero:', error)
