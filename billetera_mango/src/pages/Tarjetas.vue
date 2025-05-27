@@ -168,7 +168,6 @@
 <script setup>
 import { useTarjetasLogic } from "@/Composables/Tarjetas.js";
 
-s
 const {
   dialog,
   form, // Destructure the ref
