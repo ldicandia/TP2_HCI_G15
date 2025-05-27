@@ -7,50 +7,51 @@
             <v-img :src="mangoLogo" class="logo-image" />
           </div>
         </div>
+
         <v-text-field
           v-model="firstName"
           label="Nombre"
           variant="outlined"
           density="compact"
           class="mb-4"
-          hide-details
           color="#6291da"
-          :error="!!errors.firstName"
+          :error="!!errors.firstName.length"
           :error-messages="errors.firstName"
         />
+
         <v-text-field
           v-model="lastName"
           label="Apellido"
           variant="outlined"
           density="compact"
           class="mb-4"
-          hide-details
           color="#6291da"
-          :error="!!errors.lastName"
+          :error="!!errors.lastName.length"
           :error-messages="errors.lastName"
         />
+
         <v-text-field
           v-model="birthDate"
           label="Fecha de nacimiento (YYYY-MM-DD)"
           variant="outlined"
           density="compact"
           class="mb-4"
-          hide-details
           color="#6291da"
-          :error="!!errors.birthDate"
+          :error="!!errors.birthDate.length"
           :error-messages="errors.birthDate"
         />
+
         <v-text-field
           v-model="email"
           label="Ingresar e-mail"
           variant="outlined"
           density="compact"
           class="mb-4"
-          hide-details
           color="#6291da"
-          :error="!!errors.email"
+          :error="!!errors.email.length"
           :error-messages="errors.email"
         />
+
         <v-text-field
           v-model="password"
           label="Ingresar contraseña"
@@ -58,11 +59,11 @@
           variant="outlined"
           density="compact"
           class="mb-4"
-          hide-details
           color="#6291da"
-          :error="!!errors.password"
+          :error="!!errors.password.length"
           :error-messages="errors.password"
         />
+
         <v-text-field
           v-model="confirmPassword"
           label="Confirmar contraseña"
@@ -70,15 +71,28 @@
           variant="outlined"
           density="compact"
           class="mb-2"
-          hide-details
           color="#6291da"
-          :error="!!errors.confirmPassword"
+          :error="!!errors.confirmPassword.length"
           :error-messages="errors.confirmPassword"
         />
-        <v-btn class="login-button" block @click="handleRegister" color="button">Registrarse</v-btn>
+
+        <v-btn
+          class="login-button"
+          block
+          color="button"
+          @click="handleRegister"
+        >
+          Registrarse
+        </v-btn>
+
         <div class="mt-6 text-center">
           <span class="text-grey text-caption">¿Ya tienes cuenta? </span>
-          <a @click="goToLogin" class="text-caption text-grey text-decoration-underline">Inicia sesión</a>
+          <a
+            @click="goToLogin"
+            class="text-caption text-grey text-decoration-underline"
+          >
+            Inicia sesión
+          </a>
         </div>
       </v-card>
     </v-main>
@@ -92,7 +106,6 @@ import mangoLogo from '@/assets/mango-logo.png'
 import { useSecurityStore } from '@/stores/useAuth'
 
 const router = useRouter()
-
 const securityStore = useSecurityStore()
 
 const firstName = ref('')
@@ -101,45 +114,58 @@ const birthDate = ref('')
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
-const errors = ref({}) 
+
+const errors = ref({
+  firstName: [],
+  lastName: [],
+  birthDate: [],
+  email: [],
+  password: [],
+  confirmPassword: []
+})
 
 function validateFields() {
-  errors.value = {} 
+  // Limpiar errores
+  Object.keys(errors.value).forEach(key => {
+    errors.value[key] = []
+  })
 
-  if (!firstName.value.trim()) {
-    errors.value.firstName = 'El nombre es obligatorio.'
+  // Validaciones
+  if (!firstName.value) {
+    errors.value.firstName.push('El nombre es obligatorio.')
   }
-  if (!lastName.value.trim()) {
-    errors.value.lastName = 'El apellido es obligatorio.'
+  if (!lastName.value) {
+    errors.value.lastName.push('El apellido es obligatorio.')
   }
-  if (!birthDate.value.trim()) {
-    errors.value.birthDate = 'La fecha de nacimiento es obligatoria.'
+  if (!birthDate.value) {
+    errors.value.birthDate.push('La fecha de nacimiento es obligatoria.')
   } else if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDate.value)) {
-    errors.value.birthDate = 'La fecha de nacimiento debe tener el formato YYYY-MM-DD.'
+    errors.value.birthDate.push('La fecha debe tener formato YYYY-MM-DD.')
   }
-  if (!email.value.trim()) {
-    errors.value.email = 'El correo electrónico es obligatorio.'
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-    errors.value.email = 'El correo electrónico no es válido.'
+  if (!email.value) {
+    errors.value.email.push('El email es obligatorio.')
+  } else if (!/\S+@\S+\.\S+/.test(email.value)) {
+    errors.value.email.push('El email no es válido.')
   }
-  if (!password.value.trim()) {
-    errors.value.password = 'La contraseña es obligatoria.'
+  if (!password.value) {
+    errors.value.password.push('La contraseña es obligatoria.')
   } else if (password.value.length < 6) {
-    errors.value.password = 'La contraseña debe tener al menos 6 caracteres.'
+    errors.value.password.push('La contraseña debe tener al menos 6 caracteres.')
   }
-  if (password.value !== confirmPassword.value) {
-    errors.value.confirmPassword = 'Las contraseñas no coinciden.'
+  if (!confirmPassword.value) {
+    errors.value.confirmPassword.push('La confirmación de contraseña es obligatoria.')
+  } else if (confirmPassword.value !== password.value) {
+    errors.value.confirmPassword.push('Las contraseñas no coinciden.')
   }
 
-  return Object.keys(errors.value).length === 0
+  // ¿Hay errores?
+  return Object.values(errors.value).every(arr => arr.length === 0)
 }
 
 async function handleRegister() {
   if (!validateFields()) {
-    console.error('Errores en el formulario:', errors.value)
     return
   }
-
   try {
     await securityStore.register({
       firstName: firstName.value,
@@ -149,10 +175,9 @@ async function handleRegister() {
       password: password.value,
       metadata: {}
     })
-    console.log('Usuario registrado exitosamente')
-    router.push('/verify') 
-  } catch (error) {
-    console.error('Error al registrar usuario:', error)
+    router.push('/verify')
+  } catch (err) {
+    console.error('Error al registrar usuario:', err)
   }
 }
 
