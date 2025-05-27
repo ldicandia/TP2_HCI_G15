@@ -96,14 +96,7 @@
                   <v-select
                     label="Tipo de Tarjeta*"
                     v-model="newCard.type"
-                    :items="[
-                      'Visa Débito',
-                      'Visa Crédito',
-                      'Mastercard Débito',
-                      'Mastercard Crédito',
-                      'American Express',
-                      'Otra',
-                    ]"
+                    :items="['Débito', 'Crédito']"
                     required
                     :rules="[rules.required]"
                   ></v-select>
