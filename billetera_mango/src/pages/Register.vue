@@ -84,6 +84,9 @@
         >
           Registrarse
         </v-btn>
+        <div v-if="errors.server.length" class="text-red text-caption mt-2">
+          {{ errors.server[0] }}
+        </div>
 
         <div class="mt-6 text-center">
           <span class="text-grey text-caption">¿Ya tienes cuenta? </span>
@@ -114,14 +117,14 @@ const birthDate = ref('')
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
-
 const errors = ref({
   firstName: [],
   lastName: [],
   birthDate: [],
   email: [],
   password: [],
-  confirmPassword: []
+  confirmPassword: [],
+  server: []
 })
 
 function validateFields() {
@@ -130,7 +133,6 @@ function validateFields() {
     errors.value[key] = []
   })
 
-  // Validaciones
   if (!firstName.value) {
     errors.value.firstName.push('El nombre es obligatorio.')
   }
@@ -141,7 +143,19 @@ function validateFields() {
     errors.value.birthDate.push('La fecha de nacimiento es obligatoria.')
   } else if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDate.value)) {
     errors.value.birthDate.push('La fecha debe tener formato YYYY-MM-DD.')
+  } else {
+    const birth = new Date(birthDate.value)
+    const today = new Date()
+    let age = today.getFullYear() - birth.getFullYear()
+    const m = today.getMonth() - birth.getMonth()
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+      age--
+    }
+    if (age < 13) {
+      errors.value.birthDate.push('Debes tener al menos 13 años.')
+    }
   }
+
   if (!email.value) {
     errors.value.email.push('El email es obligatorio.')
   } else if (!/\S+@\S+\.\S+/.test(email.value)) {
@@ -158,7 +172,6 @@ function validateFields() {
     errors.value.confirmPassword.push('Las contraseñas no coinciden.')
   }
 
-  // ¿Hay errores?
   return Object.values(errors.value).every(arr => arr.length === 0)
 }
 
@@ -175,11 +188,17 @@ async function handleRegister() {
       password: password.value,
       metadata: {}
     })
-    router.push({
-      path: '/verify',
-      query: { email: email.value, password: password.value }
-    })
+    router.push({ path: '/verify', query: { email: email.value, password: password.value } })
   } catch (err) {
+    Object.keys(errors.value).forEach(key => {
+      errors.value[key] = []
+    })
+
+    if (err.code === 97) {
+      errors.value.email.push('El correo electrónico ya está en uso.')
+    } else {
+      errors.value.server.push('Error al registrar usuario. Intenta de nuevo más tarde.')
+    }
     console.error('Error al registrar usuario:', err)
   }
 }
