@@ -6,8 +6,8 @@ import { useCardStore } from "@/stores/useCard";
 // --- Import card images ---
 import visaLogo from "@/assets/Tarjetas/Visa.png";
 import mastercardLogo from "@/assets/Tarjetas/MasterCard.png";
-import amexLogo from "@/assets/Tarjetas/AmericanExpress.jpg";
-import genericCardLogo from "@/assets/Tarjetas/Generic.png";
+import amexLogo from "@/assets/Tarjetas/Amex.avif";
+import genericCardLogo from "@/assets/Tarjetas/generic.jpg";
 
 export function useTarjetasLogic() {
   // --- State ---
