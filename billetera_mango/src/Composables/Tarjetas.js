@@ -28,13 +28,20 @@ export function useTarjetasLogic() {
   const route = useRoute();
   const router = useRouter(); // Get router instance if needed for replace
 
+  // Helper para recalcular last4 y re-sincronizar cards
+  const syncCards = () => {
+    cards.value = cardStore.cards.map((c) => ({
+      ...c,
+      last4: c.last4 ?? (c.number?.slice(-4) || ""),
+    }));
+  };
+
   // --- Lifecycle Hook ---
   onMounted(async () => {
     securityStore.initialize();
     // Load cards from API
     await cardStore.getAll();
-    // Sync local ref with store
-    cards.value = cardStore.cards;
+    syncCards(); // <— asigno last4 tras la carga
 
     if (route.query.action === "add") {
       dialog.value = true;
@@ -51,8 +58,9 @@ export function useTarjetasLogic() {
     },
     expiryDate: (value) => {
       if (!value) return true;
-      const pattern = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
-      if (!pattern.test(value)) return "Formato inválido (MM/AA).";
+      // Requiere formato MM/YY (con slash obligatorio)
+      const pattern = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+      if (!pattern.test(value)) return "Formato inválido (MM/YY).";
       const [month, year] = value.split("/");
       const expiryDate = new Date(`20${year}`, month - 1);
       const currentDate = new Date();
@@ -113,35 +121,27 @@ export function useTarjetasLogic() {
   const addCard = async () => {
     if (!form.value) return;
     const { valid } = await form.value.validate();
-    if (valid) {
-      const plainNumber = newCard.value.number.replace(/\s/g, "");
-      const apiType = getApiCardType(newCard.value.type);
-      // Llamada a la API con el tipo corregido
-      const created = await cardStore.add({
-        number: plainNumber,
-        fullName: newCard.value.name,
-        cvv: newCard.value.cvv,
-        expirationDate: newCard.value.expiry,
-        type: apiType,
-      });
-
-      console.log("Tarjeta creada:", created);
-      // Opcional: guardar los últimos 4 dígitos
-      created.last4 = plainNumber.slice(-4);
-      // Refrescar lista
-      cards.value = cardStore.cards;
-      closeDialog();
-    }
+    if (!valid) return;
+    const plainNumber = newCard.value.number.replace(/\s/g, "");
+    const apiType = getApiCardType(newCard.value.type);
+    // Llamada a la API con el tipo corregido
+    const created = await cardStore.add({
+      number: plainNumber,
+      fullName: newCard.value.name,
+      cvv: newCard.value.cvv,
+      expirationDate: newCard.value.expiry,
+      type: apiType,
+    });
+    created.last4 = created.number.slice(-4);
+    syncCards(); // <— reasigno tras el alta
+    closeDialog();
   };
 
   const removeCard = async (index) => {
     const card = cards.value[index];
-    if (card.id) {
-      await cardStore.remove(card.id);
-      console.log("removed card:", card.id);
-      // After deletion, cards.value is already updated by the store
-      cards.value = cardStore.cards;
-    }
+    if (!card.id) return;
+    await cardStore.remove(card.id);
+    syncCards(); // <— reasigno tras la baja
   };
 
   const closeDialog = () => {

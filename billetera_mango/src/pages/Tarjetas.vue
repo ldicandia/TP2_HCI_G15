@@ -117,8 +117,9 @@
                     v-model="newCard.expiry"
                     required
                     :rules="[rules.required, rules.expiryDate]"
-                    placeholder="MM/AA"
+                    placeholder="MM/YY"
                     maxlength="5"
+                    persistent-hint
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
