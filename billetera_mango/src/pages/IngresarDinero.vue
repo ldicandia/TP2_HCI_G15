@@ -93,14 +93,12 @@ onMounted(async () => {
   await accountStore.getAccountDetails()
   await paymentsStore.getAll()
   await cardStore.getAll()
-  formatHistory()
 })
 
 async function depositMoney() {
   try {
     await accountStore.rechargeBalance(Number(amount.value))
     await paymentsStore.getAll()
-    formatHistory()
     amount.value = ''
     source.value = ''
     snackbarText.value = 'Dinero ingresado correctamente'
