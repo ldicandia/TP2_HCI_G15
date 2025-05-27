@@ -75,19 +75,15 @@
           :error="!!errors.confirmPassword.length"
           :error-messages="errors.confirmPassword"
         />
-        <v-btn class="login-button" block @click="handleRegister" color="button">
+
+        <v-btn
+          class="login-button"
+          block
+          color="button"
+          @click="handleRegister"
+        >
           Registrarse
         </v-btn>
-
-        <div v-if="Object.keys(errors).length" class="mt-4 mb-4">
-          <div
-            v-for="(msg, field) in errors"
-            :key="field"
-            class="text-red text-caption"
-          >
-            {{ msg }}
-          </div>
-        </div>
 
         <div class="mt-6 text-center">
           <span class="text-grey text-caption">¿Ya tienes cuenta? </span>
@@ -167,8 +163,9 @@ function validateFields() {
 }
 
 async function handleRegister() {
-  if (!validateFields()) return
-
+  if (!validateFields()) {
+    return
+  }
   try {
     await securityStore.register({
       firstName: firstName.value,
@@ -179,18 +176,8 @@ async function handleRegister() {
       metadata: {}
     })
     router.push('/verify')
-  } catch (error) {
-    // Limpio cualquier otro error previo
-    errors.value = {}
-
-    // Manejo de código 97 (email en uso)
-    if (error.code === 97) {
-      errors.value.email = 'El correo electrónico ya está en uso.'
-    } else {
-      // Mensaje genérico para otros casos
-      errors.value.server = 'Error al registrar usuario. Intenta de nuevo más tarde.'
-    }
-    console.error('Error al registrar usuario:', error)
+  } catch (err) {
+    console.error('Error al registrar usuario:', err)
   }
 }
 
