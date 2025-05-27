@@ -1,4 +1,3 @@
-
 <template>
   <v-container>
     <v-row>
@@ -26,7 +25,7 @@
       >
         <v-card class="mb-4 card-display" elevation="2">
           <v-img
-            :src="getCardImage(card.type)"
+            :src="getCardImage(card.number)"
             :alt="`${card.type || 'Tarjeta'} logo`"
             height="180px"
             cover
@@ -80,7 +79,7 @@
           <v-row justify="center" class="mb-4">
             <v-col cols="auto">
               <v-img
-                :src="getCardImage(newCard.type)"
+                :src="getCardImage(newCard.number)"
                 :alt="`${newCard.type || 'Tarjeta'} logo preview`"
                 height="150px"
                 width="180px"
@@ -179,7 +178,6 @@ const {
   removeCard,
   closeDialog,
 } = useTarjetasLogic();
-
 </script>
 
 <style scoped src="@/styles/Tarjetas.css"></style>

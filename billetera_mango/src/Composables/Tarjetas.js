@@ -9,7 +9,6 @@ import mastercardLogo from "@/assets/Tarjetas/MasterCard.png";
 import amexLogo from "@/assets/Tarjetas/AmericanExpress.jpg";
 import genericCardLogo from "@/assets/Tarjetas/Generic.png";
 
-
 export function useTarjetasLogic() {
   // --- State ---
   const dialog = ref(false);
@@ -36,7 +35,7 @@ export function useTarjetasLogic() {
     await cardStore.getAll();
     // Sync local ref with store
     cards.value = cardStore.cards;
-    
+
     if (route.query.action === "add") {
       dialog.value = true;
     }
@@ -72,28 +71,51 @@ export function useTarjetasLogic() {
   };
 
   // --- Helper function to get card image ---
-  const getCardImage = (type) => {
-    if (!type) return genericCardLogo;
-    const lowerType = type.toLowerCase();
-    if (lowerType.includes("visa")) return visaLogo;
-    if (lowerType.includes("mastercard")) return mastercardLogo;
-    if (lowerType.includes("american express")) return amexLogo;
-    return genericCardLogo;
+  // const getCardImage = (type) => {
+  //   if (!type) return genericCardLogo;
+  //   const lowerType = type.toLowerCase();
+  //   if (lowerType.includes("visa")) return visaLogo;
+  //   if (lowerType.includes("mastercard")) return mastercardLogo;
+  //   if (lowerType.includes("american express")) return amexLogo;
+  //   return genericCardLogo;
+  // };
+
+  const getCardImage = (cardNumber) => {
+    // Changed parameter to cardNumber
+    if (
+      !cardNumber ||
+      typeof cardNumber !== "string" ||
+      cardNumber.length === 0
+    ) {
+      return genericCardLogo;
+    }
+
+    const firstDigit = cardNumber.charAt(0);
+
+    if (firstDigit === "3") {
+      return amexLogo;
+    } else if (firstDigit === "4") {
+      return visaLogo;
+    } else if (firstDigit === "5") {
+      return mastercardLogo;
+    } else {
+      return genericCardLogo;
+    }
   };
 
   // --- Helper to map UI type to API type ---
   const getApiCardType = (uiType) => {
-    if (!uiType) return null
-    return uiType.toLowerCase().includes('crédito') ? 'CREDIT' : 'DEBIT'
-  }
+    if (!uiType) return null;
+    return uiType.toLowerCase().includes("crédito") ? "CREDIT" : "DEBIT";
+  };
 
   // --- Methods ---
   const addCard = async () => {
-    if (!form.value) return
-    const { valid } = await form.value.validate()
+    if (!form.value) return;
+    const { valid } = await form.value.validate();
     if (valid) {
-      const plainNumber = newCard.value.number.replace(/\s/g, "")
-      const apiType = getApiCardType(newCard.value.type)
+      const plainNumber = newCard.value.number.replace(/\s/g, "");
+      const apiType = getApiCardType(newCard.value.type);
       // Llamada a la API con el tipo corregido
       const created = await cardStore.add({
         number: plainNumber,
@@ -101,14 +123,14 @@ export function useTarjetasLogic() {
         cvv: newCard.value.cvv,
         expirationDate: newCard.value.expiry,
         type: apiType,
-      })
+      });
 
       console.log("Tarjeta creada:", created);
       // Opcional: guardar los últimos 4 dígitos
-      created.last4 = plainNumber.slice(-4)
+      created.last4 = plainNumber.slice(-4);
       // Refrescar lista
-      cards.value = cardStore.cards
-      closeDialog()
+      cards.value = cardStore.cards;
+      closeDialog();
     }
   };
 
