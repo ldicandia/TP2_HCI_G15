@@ -4,7 +4,6 @@
       <v-container>
         <v-row>
           <v-col cols="12" class="content">
-            <!-- Fila superior: Solo Saldo -->
             <v-row>
               <v-col cols="12">
                 <v-card class="saldo-card" color="surface">
@@ -29,7 +28,6 @@
                 </v-card>
               </v-col>
             </v-row>
-            <!-- Fila inferior: Botones de acción y Movimientos -->
             <v-row class="actions-row">
               <v-col cols="6" class="text-center">
                 <v-btn block @click="goEnviarDinero" class="action-button" color="button">
@@ -41,11 +39,9 @@
                   Ingresar Dinero
                 </v-btn>
                 <v-btn block @click="showDialog = true" class="action-button" color="button">
-                  <v-icon>mdi-link-variant</v-icon>
+                  <v-icon>mdi-cached</v-icon>
                   Generar Enlace de Pago
                 </v-btn>
-
-                <!-- Nuevo botón -->
                 <v-btn block @click="showLinkDialog = true" class="action-button" color="button">
                   <v-icon>mdi-link</v-icon>
                   Pagar con Enlace
@@ -77,7 +73,6 @@
                         class="my-2"
                       />
                     </div>
-                    <!-- botón Ver más / Ver menos -->
                     <div v-if="payments.length > 5" class="text-center mt-2">
                       <v-btn text @click="showMore = !showMore" color="button">
                         {{ showMore ? 'Ver menos' : 'Ver más' }}
@@ -93,7 +88,6 @@
       </v-container>
     </v-main>
 
-    <!-- Dialog para crear enlace de pago -->
     <v-dialog v-model="showDialog" max-width="400px">
       <v-card>
         <v-card-title>Nuevo enlace de pago</v-card-title>
@@ -120,7 +114,6 @@
       </v-card>
     </v-dialog>
 
-    <!-- Nuevo diálogo para pagar con enlace -->
     <v-dialog v-model="showLinkDialog" max-width="400px">
       <v-card>
         <v-card-title>Pagar enlace de pago</v-card-title>
@@ -149,7 +142,6 @@
       </v-card>
     </v-dialog>
 
-    <!-- Snackbar para notificaciones -->
     <v-snackbar
       v-model="snackbar"
       timeout="3000"
@@ -185,11 +177,10 @@ const { account }   = storeToRefs(accountStore)
 const { payments }  = storeToRefs(paymentsStore)
 const { cards }    = storeToRefs(cardStore)
 
-// --- opciones para el select de tarjetas ---
 const cardOptions = computed(() =>
   cards.value.map(c => {
     const last4 = c.last4 ?? (c.number?.slice(-4) ?? '0000')
-    cardSelectedId.value = c.id // actualiza el id seleccionado
+    cardSelectedId.value = c.id 
     return `${c.type} **** **** **** ${last4}`
   })
 )
@@ -206,7 +197,7 @@ const showLinkDialog  = ref(false)
 const paymentDescription = ref('')
 const paymentAmount      = ref(null)
 const linkInput        = ref('')
-const cardId           = ref(null)   // ahora seleccionado por el select
+const cardId           = ref(null)   
 const snackbar     = ref(false)
 const snackbarText = ref('')
 

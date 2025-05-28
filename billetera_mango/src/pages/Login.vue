@@ -26,7 +26,6 @@
           hide-details
           color="#6291da"
         />
-        <!-- Mensaje de error -->
         <div v-if="errorMessage" class="error-message text-red text-caption mb-4">
           {{ errorMessage }}
         </div>

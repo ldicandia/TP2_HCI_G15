@@ -57,11 +57,9 @@
       </v-col>
     </v-row>
 
-    <!-- Dialogo para agregar nueva tarjeta -->
     <v-dialog v-model="dialog" max-width="600px">
       <v-card>
         <v-card-title class="d-flex align-center">
-          <!-- --- Back Arrow Button --- -->
           <v-btn
             icon="mdi-arrow-left"
             variant="text"
@@ -71,11 +69,9 @@
             color="button"
           ></v-btn>
 
-          <!-- --- Title --- -->
           <span class="text-h5">Vincular Nueva Tarjeta</span>
         </v-card-title>
         <v-card-text>
-          <!-- Image Preview Row -->
           <v-row justify="center" class="mb-4">
             <v-col cols="auto">
               <v-img
@@ -162,7 +158,7 @@ import { useTarjetasLogic } from "@/Composables/Tarjetas.js";
 
 const {
   dialog,
-  form, // Destructure the ref
+  form, 
   cards,
   newCard,
   rules,

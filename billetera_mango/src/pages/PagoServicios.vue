@@ -13,10 +13,7 @@
             <h1 class="text-center mb-4">Pago de Servicios</h1>
           </v-col>
         </v-row>
-        
-        <!-- Transición suave entre selección y formulario -->
         <v-fade-transition>
-          <!-- Selección de servicios -->
           <v-row v-if="!selectedService" key="selection">
             <v-col cols="12">
               <h3 class="text-center">Seleccione un servicio para pagar</h3>
@@ -29,7 +26,6 @@
             </v-col>
           </v-row>
           
-          <!-- Formulario de pago -->
           <v-card v-else key="form" class="pa-6" color="surface">
             <h3>Pagar {{ selectedService }}</h3>
             <v-text-field label="Monto" variant="outlined" class="mt-4" />
@@ -38,7 +34,6 @@
           </v-card>
         </v-fade-transition>
         
-        <!-- Servicios pagados recientemente -->
         <v-card class="pa-6 mt-6" color="surface">
           <h3>Servicios Pagados Recientemente</h3>
           <p>Luz: $200 - 01/10/2023</p>

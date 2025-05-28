@@ -1,6 +1,5 @@
 <template>
   <v-app class="bg-dark">
-    <!-- Main Content -->
     <v-main>
       <v-container>
         <v-row>
@@ -12,15 +11,11 @@
           <v-col cols="12" md="6">
             <v-card class="pa-4" color="surface">
               <h3 class="mb-4">Enviar Dinero</h3>
-
-              <!-- Selector de método -->
               <v-radio-group v-model="method" row class="mb-4">
                 <v-radio label="CVU" value="cvu" />
                 <v-radio label="Email" value="email" />
                 <v-radio label="Alias" value="alias" />
               </v-radio-group>
-
-              <!-- Campo para CVU/Email/Alias -->
               <v-text-field
                 v-model="recipient"
                 :label="`Ingresar ${method.toUpperCase()}`"
@@ -30,8 +25,6 @@
                 hide-details
                 color="cyan"
               />
-
-              <!-- Campo para cantidad -->
               <v-text-field
                 v-model="amount"
                 label="Cantidad"
@@ -42,8 +35,6 @@
                 hide-details
                 color="cyan"
               />
-
-              <!-- Campo Descripción debajo de cantidad -->
               <v-text-field
                 v-model="description"
                 label="Descripción"
@@ -61,7 +52,6 @@
       </v-container>
     </v-main>
 
-    <!-- Snackbar para notificaciones -->
     <v-snackbar
       v-model="snackbar"
       timeout="3000"
@@ -94,7 +84,6 @@ const history = ref([])
 const snackbar = ref(false)
 const snackbarText = ref('')
 
-// Al montar, carga el historial desde la API
 onMounted(async () => {
   await securityStore.initialize()
   await paymentsStore.getAll()
@@ -102,7 +91,6 @@ onMounted(async () => {
 
 async function sendMoney() {
   try {
-    // incluimos description
     const paymentData = {
       amount: Number(amount.value),
       description: description.value || `Pago a ${recipient.value}`

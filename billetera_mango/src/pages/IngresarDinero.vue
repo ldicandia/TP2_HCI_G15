@@ -1,6 +1,5 @@
 <template>
   <v-app class="bg-dark">
-    <!-- Main Content -->
     <v-main>
       <v-container>
         <v-row>
@@ -40,7 +39,6 @@
       </v-container>
     </v-main>
 
-    <!-- Snackbar para notificaciones -->
     <v-snackbar
       v-model="snackbar"
       timeout="3000"

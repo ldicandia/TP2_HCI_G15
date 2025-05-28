@@ -30,7 +30,6 @@ const securityStore = useSecurityStore()
 const router = useRouter()
 const route = useRoute()
 
-// recuperamos email y password de los query params
 const email = ref(route.query.email || '')
 const password = ref(route.query.password || '')
 const verificationCode = ref('')
@@ -39,7 +38,6 @@ const errorMessage = ref('')
 async function handleVerify() {
   try {
     await securityStore.verify(verificationCode.value)
-    // una vez verificado, hacemos el login
     await securityStore.login(
       { email: email.value, password: password.value },
       true

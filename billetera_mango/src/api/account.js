@@ -36,7 +36,7 @@ class Account {
         this.balance = balance;
         this.alias = alias;
         this.cvu = cvu;
-        this.invested = invested; // Agregar la propiedad 'invested'
+        this.invested = invested;
     }
     toString() {
         return JSON.stringify(this, null, 2);

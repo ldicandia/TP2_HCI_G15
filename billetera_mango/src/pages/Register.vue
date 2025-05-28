@@ -128,7 +128,6 @@ const errors = ref({
 })
 
 function validateFields() {
-  // Limpiar errores
   Object.keys(errors.value).forEach(key => {
     errors.value[key] = []
   })

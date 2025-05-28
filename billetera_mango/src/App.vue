@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <!-- el sidebar no se agrega si estoy en las ventanas register o login-->
     <Sidebar v-if="!isAuthRoute" />
     <v-main>
       <router-view />

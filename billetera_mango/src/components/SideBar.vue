@@ -1,8 +1,6 @@
 <template>
-  <!-- Menú lateral -->
   <v-navigation-drawer permanent color="surface" class="navigation-drawer">
     <v-list>
-      <!-- Logo -->
       <v-list-item
         class="logo-container"
         pa-0
@@ -12,21 +10,18 @@
       >
         <v-img :src="mangoLogo" max-width="120" class="logo mx-auto" />
       </v-list-item>
-      <!-- Botón Inicio (seleccionado) -->
       <v-list-item>
         <v-btn block class="menu-button-selected" flat @click="goToHome">
           <v-icon class="icon">mdi-home</v-icon>
           <span>Inicio</span>
         </v-btn>
       </v-list-item>
-      <!-- Botón Tarjetas -->
       <v-list-item>
         <v-btn block class="menu-button" flat @click="goToTarjetas">
           <v-icon class="icon">mdi-credit-card</v-icon>
           <span>Tarjetas</span>
         </v-btn>
       </v-list-item>
-      <!-- Botón Pago de Servicios -->
       <v-list-item>
         <v-btn block class="menu-button" flat @click="goToPagoServicios">
           <v-icon class="icon">mdi-receipt</v-icon>
@@ -34,7 +29,6 @@
         </v-btn>
       </v-list-item>
     </v-list>
-    <!-- Botón Cerrar Sesión -->
     <v-btn block @click="goToLogin" class="logout-button" color="button" flat>Cerrar Sesión</v-btn>
   </v-navigation-drawer>
 </template>
